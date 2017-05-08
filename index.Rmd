@@ -1,0 +1,16 @@
+---
+title: "Tidy data and statistical visualisation <br> to support exploration of temporal  data"
+author: "Earo Wang"
+date: "May 29, 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "myremark.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+## Agenda
+
+---
