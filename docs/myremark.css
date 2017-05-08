@@ -134,12 +134,4 @@ code {
   float: right;
   padding-top: 1em;
 }
-/* Some special classes */
-.title {font-family: 'Yanone Kaffeesatz'; font-size: 2.6em; color: #F3F3F3; font-weight: 400}
-.subtitle {font-family: 'Yanone Kaffeesatz'; font-size: 2em}
-.author {font-family: 'Yanone Kaffeesatz'; font-size: 1.8em; font-style: bold; color: #FFBA08; letter-spacing: 0.05em}  
-.coauthor {font-size: 1.0em; letter-spacing: 0.05em; color: #FFBA08}  
-.institution {font-size: 1.0em; color: #F3F3F3; font-style: bold; letter-spacing: 0.05em}
-.date {font-size: 0.8em; font-style: italic; color: #F3F3F3}
-.cite {font-size: 0.8em; color: #3F88C5; font-style: italic}
 </style>
