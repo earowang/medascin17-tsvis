@@ -35,6 +35,7 @@ ul li:before {
   content: "\f201";
   font-family: "FontAwesome";
   margin-right: 10px;
+  color: #3F88C5;
 }
 ul li li:before {
   content: "\f1fe";
