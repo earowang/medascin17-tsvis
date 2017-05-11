@@ -4,7 +4,7 @@
     <title>Tidy data and statistical visualisation   to support exploration of temporal data</title>
     <meta charset="utf-8">
     <meta name="author" content="Earo Wang" />
-    <link href="index_files/remark-css-0.0.1/example.css" rel="stylesheet" />
+    <link href="index_files/remark-css/example.css" rel="stylesheet" />
     <link rel="stylesheet" href="myremark.css" type="text/css" />
   </head>
   <body>
@@ -16,6 +16,8 @@ class: center, middle, inverse, title-slide
 ### May 29, 2017 <br> <br> Slides on <a href="http://bit.ly/tsvis17" class="uri">http://bit.ly/tsvis17</a>
 
 ---
+
+
 
 
 ## Bio
@@ -33,11 +35,144 @@ class: center, middle, inverse, title-slide
     + `plotly::ggplotly()`
     + Shiny
 
+
+
+
 ---
 
 class: inverse middle center
 
 # Tidy temporal data
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor data
+
+.footnote[.red[*] sourced from [the city of Melbourne](http://www.pedestrian.melbourne.vic.gov.au)]
+]
+.right-column[
+
+
+```r
+ped_loc &lt;- read_csv("data/Pedestrian_sensor_locations.csv")
+ped_loc %&gt;% 
+  select(`Sensor ID`, `Sensor Description`, Longitude, Latitude)
+```
+
+```
+#&gt; # A tibble: 43 × 4
+#&gt;    `Sensor ID`            `Sensor Description` Longitude
+#&gt;          &lt;int&gt;                           &lt;chr&gt;     &lt;dbl&gt;
+#&gt; 1           22 Flinders St-Elizabeth St (East)  144.9651
+#&gt; 2           34            Flinders St-Spark La  144.9742
+#&gt; 3           11                 Waterfront City  144.9396
+#&gt; 4            8                     Webb Bridge  144.9472
+#&gt; 5            7                  Birrarung Marr  144.9714
+#&gt; 6           13               Flagstaff Station  144.9566
+#&gt; 7           15                   State Library  144.9645
+#&gt; 8           27               QV Market-Peel St  144.9566
+#&gt; 9           12                        New Quay  144.9429
+#&gt; 10          24   Spencer St-Collins St (North)  144.9545
+#&gt; # ... with 33 more rows, and 1 more variables:
+#&gt; #   Latitude &lt;dbl&gt;
+```
+]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor info
+### - sensor map
+]
+.right-column[
+
+&lt;img src="figure/ped-map-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor info
+### - sensor map
+### - hourly counts
+]
+.right-column[
+
+Tidy data in wide form
+
+
+```r
+ped_2017 &lt;- read_csv("http://www.pedestrian.melbourne.vic.gov.au/datadownload/March_2017.csv")
+ped_2017
+```
+
+```
+#&gt; # A tibble: 744 × 45
+#&gt;          Date  Hour `State Library` `Collins Place (South)`
+#&gt;         &lt;chr&gt; &lt;int&gt;           &lt;int&gt;                   &lt;int&gt;
+#&gt; 1  01/03/2017     0             140                      36
+#&gt; 2  01/03/2017     1              64                      17
+#&gt; 3  01/03/2017     2              29                      11
+#&gt; 4  01/03/2017     3              13                       9
+#&gt; 5  01/03/2017     4              13                      10
+#&gt; 6  01/03/2017     5              31                      84
+#&gt; 7  01/03/2017     6              92                     252
+#&gt; 8  01/03/2017     7             327                     767
+#&gt; 9  01/03/2017     8             908                    1997
+#&gt; 10 01/03/2017     9             775                    1319
+#&gt; # ... with 734 more rows, and 41 more variables: `Collins
+#&gt; #   Place (North)` &lt;int&gt;, `Flagstaff Station` &lt;int&gt;,
+#&gt; #   `Melbourne Central` &lt;int&gt;, `Town Hall (West)` &lt;int&gt;,
+#&gt; #   `Bourke Street Mall (North)` &lt;int&gt;, `Bourke Street Mall
+#&gt; #   (South)` &lt;int&gt;, `Australia on Collins` &lt;int&gt;, `Southern
+#&gt; #   Cross Station` &lt;int&gt;, `Victoria Point` &lt;int&gt;, `New
+#&gt; #   Quay` &lt;int&gt;, `Waterfront City` &lt;int&gt;, `Webb
+#&gt; #   Bridge` &lt;int&gt;, `Princes Bridge` &lt;int&gt;, `Flinders St
+#&gt; #   Station Underpass` &lt;int&gt;, `Sandridge Bridge` &lt;int&gt;,
+#&gt; #   `Birrarung Marr` &lt;int&gt;, `QV Market-Elizabeth
+#&gt; #   (West)` &lt;int&gt;, `Flinders St-Elizabeth St (East)` &lt;int&gt;,
+#&gt; #   `Spencer St-Collins St (North)` &lt;int&gt;, `Spencer
+#&gt; #   St-Collins St (South)` &lt;int&gt;, `Bourke St-Russell St
+#&gt; #   (West)` &lt;int&gt;, `Convention/Exhibition Centre` &lt;int&gt;,
+#&gt; #   `Chinatown-Swanston St (North)` &lt;int&gt;, `Chinatown-Lt
+#&gt; #   Bourke St (South)` &lt;int&gt;, `QV Market-Peel St` &lt;int&gt;,
+#&gt; #   `Vic Arts Centre` &lt;int&gt;, `Lonsdale St (South)` &lt;int&gt;,
+#&gt; #   `Lygon St (West)` &lt;int&gt;, `Flinders St-Spring St
+#&gt; #   (West)` &lt;int&gt;, `Flinders St-Spark Lane` &lt;int&gt;, `Alfred
+#&gt; #   Place` &lt;int&gt;, `Queen Street (West)` &lt;int&gt;, `Lygon
+#&gt; #   Street (East)` &lt;int&gt;, `Flinders St-Swanston St
+#&gt; #   (West)` &lt;int&gt;, `Spring St-Lonsdale St (South)` &lt;int&gt;,
+#&gt; #   `City Square` &lt;int&gt;, `St. Kilda-Alexandra
+#&gt; #   Gardens` &lt;int&gt;, `Grattan St-Swanston St (West)` &lt;int&gt;,
+#&gt; #   `Monash Rd-Swanston St (West)` &lt;int&gt;, `Tin
+#&gt; #   Alley-Swanston St (West)` &lt;int&gt;, Southbank &lt;int&gt;
+```
+]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor info
+### - sensor map
+### - hourly counts
+### - `autoplot`
+]
+.right-column[
+
+
+```r
+ped_ts &lt;- ts(ped_2017[, -c(1, 2)], frequency = 24)
+sub_ped_ts &lt;- ped_ts[, sample(ncol(ped_ts), 5)]
+autoplot(sub_ped_ts, facet = TRUE)
+```
+
+&lt;img src="figure/ped-ts-1.png" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 

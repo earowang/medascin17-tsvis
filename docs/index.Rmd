@@ -1,0 +1,119 @@
+---
+title: "Tidy data and statistical visualisation <br> to support exploration of temporal data"
+type: "Workshop"
+author: "Earo Wang"
+date: "May 29, 2017 <br> <br> Slides on http://bit.ly/tsvis17"
+output:
+  xaringan::moon_reader:
+    css: ["default", "myremark.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r initial, echo = FALSE, cache = FALSE, results = 'hide'}
+library(knitr)
+options(htmltools.dir.version = FALSE, tibble.width = 60)
+opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
+  fig.path = 'figure/', cache.path = 'cache/', fig.align = 'center', 
+  fig.width = 12, fig.height = 9, fig.show = 'hold', 
+  cache = TRUE, external = TRUE, dev = 'CairoPNG', dpi = 300
+)
+read_chunk('src/code.R')
+```
+
+## Bio
+
+---
+
+## Agenda
+
+* Tidy temporal data
+    + `ts` class vs `tibble` class
+* What does `gg` in `ggplot2` stand for? A grammar of graphics
+* How do we know if what we see really is there? Visual statistical inference
+* Calendar-based view for visualising people's daily schedules
+* Interactive data visualisation on the web
+    + `plotly::ggplotly()`
+    + Shiny
+
+```{r load-library}
+```
+
+```{r theme-remark}
+```
+---
+
+class: inverse middle center
+
+# Tidy temporal data
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor data
+
+.footnote[.red[*] sourced from [the city of Melbourne](http://www.pedestrian.melbourne.vic.gov.au)]
+]
+.right-column[
+
+```{r ped-loc, echo = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor info
+### - sensor map
+]
+.right-column[
+
+```{r ped-map}
+```
+]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor info
+### - sensor map
+### - hourly counts
+]
+.right-column[
+
+```{r ped-wide, echo = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor info
+### - sensor map
+### - hourly counts
+### - `autoplot`
+]
+.right-column[
+
+```{r ped-ts, echo = TRUE, fig.height = 10}
+```
+]
+
+---
+
+.left-column[
+## Tidy data
+### - `ts` class
+]
+.right-column[
+example here
+]
+
+---
