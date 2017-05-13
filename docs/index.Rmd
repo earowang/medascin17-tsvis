@@ -48,27 +48,37 @@ read_chunk('src/code.R')
 
 class: inverse middle center
 
-# Tidy temporal data
+# Tidy temporal data and data wrangling
+
+---
+
+class: middle center
+
+## What is tidy data?
+
+* Each variable forms a column.
+* Each observation forms a row.
+* Each type of observational unit forms a table.
 
 ---
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
 ### - sensor data
-
-.footnote[.red[*] sourced from [the city of Melbourne](http://www.pedestrian.melbourne.vic.gov.au)]
 ]
 .right-column[
 
 ```{r ped-loc, echo = TRUE}
 ```
+
+.footnote[.red[*] source: [the city of Melbourne](http://www.pedestrian.melbourne.vic.gov.au)]
 ]
 
 ---
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
-### - sensor info
+### - sensor data
 ### - sensor map
 ]
 .right-column[
@@ -81,7 +91,7 @@ class: inverse middle center
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
-### - sensor info
+### - sensor data
 ### - sensor map
 ### - hourly counts
 ]
@@ -95,25 +105,133 @@ class: inverse middle center
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
-### - sensor info
+### - sensor data
 ### - sensor map
 ### - hourly counts
 ### - `autoplot`
 ]
 .right-column[
 
-```{r ped-ts, echo = TRUE, fig.height = 10}
+```{r ped-ts-show, echo = TRUE, eval = FALSE}
+ped_ts <- ts(ped_2017[, -c(1, 2)], frequency = 24)
+sub_ped_ts <- ped_ts[, sample(ncol(ped_ts), 5)]
+autoplot(sub_ped_ts, facet = TRUE)
+```
+
+```{r ped-ts, fig.height = 10}
 ```
 ]
 
 ---
 
 .left-column[
-## Tidy data
-### - `ts` class
+## Melbourne pedestrian data .red[*]
+### - sensor data
+### - sensor map
+### - hourly counts
+### - `autoplot`
+### - issues?
 ]
 .right-column[
-example here
+From the tidy data in the wide format,
+
+* how to join the pedestrian sensor locations by the sensor names?
+* how to retrieve the temporal components and plot the sub-series b/t weekdays
+  & weekends?
 ]
+
+---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor data
+### - sensor map
+### - hourly counts
+### - `autoplot`
+### - issues?
+### - tidy data
+]
+.right-column[
+
+```{r ped-long, echo = TRUE}
+```
+
+p.s. `tidyr::spread` makes it easy to switch "long" back to "wide":
+
+```{r ped-spread, echo = TRUE, eval = FALSE}
+ped_long %>%
+  spread(Sensor_Name, Counts)
+```
+
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+]
+.right-column[
+```{r otway-weather, echo = TRUE}
+```
+.footnote[.red[*] source: [global historical climatology network](https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/)]
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidying
+]
+.right-column[
+```{r otway-tidy-1, echo = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidying
+]
+.right-column[
+```{r otway-tidy-2, echo = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidying
+]
+.right-column[
+```{r otway-tidy-3, echo = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidying
+]
+.right-column[
+```{r otway-tidy, echo = TRUE}
+```
+]
+
+---
+
+class: inverse middle center
+
+# A grammar of graphics
+
+---
+
 
 ---

@@ -42,15 +42,23 @@ class: center, middle, inverse, title-slide
 
 class: inverse middle center
 
-# Tidy temporal data
+# Tidy temporal data and data wrangling
+
+---
+
+class: middle center
+
+## What is tidy data?
+
+* Each variable forms a column.
+* Each observation forms a row.
+* Each type of observational unit forms a table.
 
 ---
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
 ### - sensor data
-
-.footnote[.red[*] sourced from [the city of Melbourne](http://www.pedestrian.melbourne.vic.gov.au)]
 ]
 .right-column[
 
@@ -78,13 +86,15 @@ ped_loc %&gt;%
 #&gt; # ... with 33 more rows, and 1 more variables:
 #&gt; #   Latitude &lt;dbl&gt;
 ```
+
+.footnote[.red[*] source: [the city of Melbourne](http://www.pedestrian.melbourne.vic.gov.au)]
 ]
 
 ---
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
-### - sensor info
+### - sensor data
 ### - sensor map
 ]
 .right-column[
@@ -96,7 +106,7 @@ ped_loc %&gt;%
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
-### - sensor info
+### - sensor data
 ### - sensor map
 ### - hourly counts
 ]
@@ -104,7 +114,7 @@ ped_loc %&gt;%
 
 
 ```r
-ped_2017 &lt;- read_csv("http://www.pedestrian.melbourne.vic.gov.au/datadownload/March_2017.csv")
+ped_2017 &lt;- read_csv("data/pedestrian_03_2017.csv")
 ped_2017
 ```
 
@@ -155,7 +165,7 @@ ped_2017
 
 .left-column[
 ## Melbourne pedestrian data .red[*]
-### - sensor info
+### - sensor data
 ### - sensor map
 ### - hourly counts
 ### - `autoplot`
@@ -175,14 +185,257 @@ autoplot(sub_ped_ts, facet = TRUE)
 ---
 
 .left-column[
-## Tidy data
-### - `ts` class
+## Melbourne pedestrian data .red[*]
+### - sensor data
+### - sensor map
+### - hourly counts
+### - `autoplot`
+### - issues?
 ]
 .right-column[
-example here
+From the tidy data in the wide format,
+
+* how to join the pedestrian sensor locations by the sensor names?
+* how to retrieve the temporal components and plot the sub-series b/t weekdays
+  &amp; weekends?
 ]
 
 ---
+
+.left-column[
+## Melbourne pedestrian data .red[*]
+### - sensor data
+### - sensor map
+### - hourly counts
+### - `autoplot`
+### - issues?
+### - tidy data
+]
+.right-column[
+
+
+```r
+ped_long &lt;- ped_2017 %&gt;% 
+  gather(Sensor_Name, Counts, `State Library`:Southbank) %&gt;% 
+  mutate(Date = dmy(Date))
+ped_long
+```
+
+```
+#&gt; # A tibble: 31,992 × 4
+#&gt;          Date  Hour   Sensor_Name Counts
+#&gt;        &lt;date&gt; &lt;int&gt;         &lt;chr&gt;  &lt;int&gt;
+#&gt; 1  2017-03-01     0 State Library    140
+#&gt; 2  2017-03-01     1 State Library     64
+#&gt; 3  2017-03-01     2 State Library     29
+#&gt; 4  2017-03-01     3 State Library     13
+#&gt; 5  2017-03-01     4 State Library     13
+#&gt; 6  2017-03-01     5 State Library     31
+#&gt; 7  2017-03-01     6 State Library     92
+#&gt; 8  2017-03-01     7 State Library    327
+#&gt; 9  2017-03-01     8 State Library    908
+#&gt; 10 2017-03-01     9 State Library    775
+#&gt; # ... with 31,982 more rows
+```
+
+p.s. `tidyr::spread` makes it easy to switch "long" back to "wide":
+
+
+```r
+ped_long %&gt;%
+  spread(Sensor_Name, Counts)
+```
+
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+]
+.right-column[
+
+```r
+otway_weather &lt;- read_csv("data/weather_2017.csv")
+head(otway_weather)
+```
+
+```
+#&gt; # A tibble: 6 × 35
+#&gt;            ID  YEAR MONTH ELEMENT VALUE1 VALUE2 VALUE3
+#&gt;         &lt;chr&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+#&gt; 1 ASN00090015  2017    01    TMAX    174    153    189
+#&gt; 2 ASN00090015  2017    01    TMIN    144    124    135
+#&gt; 3 ASN00090015  2017    01    PRCP      4      8      0
+#&gt; 4 ASN00090015  2017    01    TAVG    147    143    164
+#&gt; 5 ASN00090015  2017    02    TMAX    188    200    206
+#&gt; 6 ASN00090015  2017    02    TMIN    102    149    155
+#&gt; # ... with 28 more variables: VALUE4 &lt;int&gt;, VALUE5 &lt;int&gt;,
+#&gt; #   VALUE6 &lt;int&gt;, VALUE7 &lt;int&gt;, VALUE8 &lt;int&gt;, VALUE9 &lt;int&gt;,
+#&gt; #   VALUE10 &lt;int&gt;, VALUE11 &lt;int&gt;, VALUE12 &lt;int&gt;,
+#&gt; #   VALUE13 &lt;int&gt;, VALUE14 &lt;int&gt;, VALUE15 &lt;int&gt;,
+#&gt; #   VALUE16 &lt;int&gt;, VALUE17 &lt;int&gt;, VALUE18 &lt;int&gt;,
+#&gt; #   VALUE19 &lt;int&gt;, VALUE20 &lt;int&gt;, VALUE21 &lt;int&gt;,
+#&gt; #   VALUE22 &lt;int&gt;, VALUE23 &lt;int&gt;, VALUE24 &lt;int&gt;,
+#&gt; #   VALUE25 &lt;int&gt;, VALUE26 &lt;int&gt;, VALUE27 &lt;int&gt;,
+#&gt; #   VALUE28 &lt;int&gt;, VALUE29 &lt;int&gt;, VALUE30 &lt;int&gt;,
+#&gt; #   VALUE31 &lt;int&gt;
+```
+.footnote[.red[*] source: [global historical climatology network](https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/)]
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidy up
+]
+.right-column[
+
+```r
+otway_weather %&gt;% 
+  gather(DAY, VALUE, VALUE1:VALUE31)
+```
+
+```
+#&gt; # A tibble: 620 × 6
+#&gt;             ID  YEAR MONTH ELEMENT    DAY VALUE
+#&gt;          &lt;chr&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
+#&gt; 1  ASN00090015  2017    01    TMAX VALUE1   174
+#&gt; 2  ASN00090015  2017    01    TMIN VALUE1   144
+#&gt; 3  ASN00090015  2017    01    PRCP VALUE1     4
+#&gt; 4  ASN00090015  2017    01    TAVG VALUE1   147
+#&gt; 5  ASN00090015  2017    02    TMAX VALUE1   188
+#&gt; 6  ASN00090015  2017    02    TMIN VALUE1   102
+#&gt; 7  ASN00090015  2017    02    PRCP VALUE1     0
+#&gt; 8  ASN00090015  2017    02    TAVG VALUE1   169
+#&gt; 9  ASN00090015  2017    03    TMAX VALUE1   271
+#&gt; 10 ASN00090015  2017    03    TMIN VALUE1   181
+#&gt; # ... with 610 more rows
+```
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidy up
+]
+.right-column[
+
+```r
+otway_weather %&gt;% 
+  gather(DAY, VALUE, VALUE1:VALUE31) %&gt;% 
+  mutate(
+    DAY = str_sub(DAY, start = 6),
+    DATE = ymd(paste(YEAR, MONTH, DAY, sep = "-"))
+  ) %&gt;% 
+  arrange(DATE) %&gt;% 
+  select(ID, DATE, ELEMENT, VALUE) %&gt;% 
+  filter(!(is.na(DATE)))
+```
+
+```
+#&gt; # A tibble: 604 × 4
+#&gt;             ID       DATE ELEMENT VALUE
+#&gt;          &lt;chr&gt;     &lt;date&gt;   &lt;chr&gt; &lt;int&gt;
+#&gt; 1  ASN00090015 2017-01-01    TMAX   174
+#&gt; 2  ASN00090015 2017-01-01    TMIN   144
+#&gt; 3  ASN00090015 2017-01-01    PRCP     4
+#&gt; 4  ASN00090015 2017-01-01    TAVG   147
+#&gt; 5  ASN00090015 2017-01-02    TMAX   153
+#&gt; 6  ASN00090015 2017-01-02    TMIN   124
+#&gt; 7  ASN00090015 2017-01-02    PRCP     8
+#&gt; 8  ASN00090015 2017-01-02    TAVG   143
+#&gt; 9  ASN00090015 2017-01-03    TMAX   189
+#&gt; 10 ASN00090015 2017-01-03    TMIN   135
+#&gt; # ... with 594 more rows
+```
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidy up
+]
+.right-column[
+
+```r
+otway_weather %&gt;% 
+  gather(DAY, VALUE, VALUE1:VALUE31) %&gt;% 
+  mutate(
+    DAY = str_sub(DAY, start = 6),
+    DATE = ymd(paste(YEAR, MONTH, DAY, sep = "-"))
+  ) %&gt;% 
+  arrange(DATE) %&gt;% 
+  select(ID, DATE, ELEMENT, VALUE) %&gt;% 
+  filter(!(is.na(DATE))) %&gt;% 
+  spread(ELEMENT, VALUE)
+```
+
+```
+#&gt; # A tibble: 151 × 6
+#&gt;             ID       DATE  PRCP  TAVG  TMAX  TMIN
+#&gt; *        &lt;chr&gt;     &lt;date&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+#&gt; 1  ASN00090015 2017-01-01     4   147   174   144
+#&gt; 2  ASN00090015 2017-01-02     8   143   153   124
+#&gt; 3  ASN00090015 2017-01-03     0   164   189   135
+#&gt; 4  ASN00090015 2017-01-04     0   178   204   147
+#&gt; 5  ASN00090015 2017-01-05     0   181   195   167
+#&gt; 6  ASN00090015 2017-01-06     0   203   229   170
+#&gt; 7  ASN00090015 2017-01-07     0   244   321   184
+#&gt; 8  ASN00090015 2017-01-08     0   172   207   181
+#&gt; 9  ASN00090015 2017-01-09     0   166   200   150
+#&gt; 10 ASN00090015 2017-01-10     0   172   198   128
+#&gt; # ... with 141 more rows
+```
+]
+
+---
+
+.left-column[
+## Otway weather data .red[*]
+### - what variables?
+### - tidy up
+]
+.right-column[
+
+```r
+otway_tidy &lt;- otway_weather %&gt;% 
+  gather(DAY, VALUE, VALUE1:VALUE31) %&gt;% 
+  mutate(
+    DAY = str_sub(DAY, start = 6),
+    DATE = ymd(paste(YEAR, MONTH, DAY, sep = "-"))
+  ) %&gt;% 
+  arrange(DATE) %&gt;% 
+  select(ID, DATE, ELEMENT, VALUE) %&gt;% 
+  filter(!(is.na(DATE))) %&gt;% 
+  spread(ELEMENT, VALUE) %&gt;% 
+  mutate(
+    TAVG = TAVG / 10,
+    TMAX = TMAX / 10,
+    TMIN = TMIN / 10
+  )
+head(otway_tidy)
+```
+
+```
+#&gt; # A tibble: 6 × 6
+#&gt;            ID       DATE  PRCP  TAVG  TMAX  TMIN
+#&gt;         &lt;chr&gt;     &lt;date&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 ASN00090015 2017-01-01     4  14.7  17.4  14.4
+#&gt; 2 ASN00090015 2017-01-02     8  14.3  15.3  12.4
+#&gt; 3 ASN00090015 2017-01-03     0  16.4  18.9  13.5
+#&gt; 4 ASN00090015 2017-01-04     0  17.8  20.4  14.7
+#&gt; 5 ASN00090015 2017-01-05     0  18.1  19.5  16.7
+#&gt; 6 ASN00090015 2017-01-06     0  20.3  22.9  17.0
+```
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
