@@ -6,6 +6,7 @@ date: "May 29, 2017 <br> <br> Slides on http://bit.ly/tsvis17"
 output:
   xaringan::moon_reader:
     css: ["default", "myremark.css"]
+    self_contained: false
     nature:
       highlightStyle: github
       highlightLines: true
@@ -30,14 +31,12 @@ read_chunk('src/code.R')
 
 ## Agenda
 
-* Tidy temporal data
-    + `ts` class vs `tibble` class
+* Why `tidyverse`? Tidy data
 * What does `gg` in `ggplot2` stand for? A grammar of graphics
 * How do we know if what we see really is there? Visual statistical inference
-* Calendar-based view for visualising people's daily schedules
 * Interactive data visualisation on the web
-    + `plotly::ggplotly()`
-    + Shiny
+    + plotly: `ggplotly()`
+    + shiny app: `wanderer4melb`
 
 ```{r load-library}
 ```
@@ -48,7 +47,7 @@ read_chunk('src/code.R')
 
 class: inverse middle center
 
-# Tidy temporal data and data wrangling
+# Tidy data
 
 ---
 
@@ -114,8 +113,9 @@ class: middle
 
 ```{r ped-ts-show, echo = TRUE, eval = FALSE}
 ped_ts <- ts(ped_2017[, -c(1, 2)], frequency = 24)
-sub_ped_ts <- ped_ts[, sample(ncol(ped_ts), 5)]
-autoplot(sub_ped_ts, facet = TRUE)
+selected_id <- c(1, 10, 18, 19, 24)
+sub_ped_ts <- ped_ts[, selected_id]
+autoplot(sub_ped_ts, facet = TRUE) + theme_remark()
 ```
 
 ```{r ped-ts, fig.height = 10}
@@ -289,7 +289,7 @@ facet: Sensor_Name
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - Southern X
+### - southern x
 ]
 .right-column[
 
@@ -303,7 +303,7 @@ facet: Sensor_Name
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - Southern X
+### - southern x
 ]
 .right-column[
 
@@ -324,7 +324,7 @@ layer:
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - Southern X
+### - southern x
 ]
 .right-column[
 
@@ -346,7 +346,7 @@ facet: Wday
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - Southern X
+### - southern x
 ]
 .right-column[
 
@@ -360,7 +360,7 @@ facet: Wday
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - Southern X
+### - southern x
 ]
 .right-column[
 
@@ -382,7 +382,7 @@ facet: Wday
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - Southern X
+### - southern x
 ]
 .right-column[
 
@@ -399,3 +399,80 @@ coord: polar
 ```
 
 ]
+
+---
+
+.left-column[
+## Your turn
+### - weather data
+]
+.right-column[
+```{r otway-more, echo = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Your turn
+### - weather data
+### - grammar here?
+]
+.right-column[
+```{r otway-month-a, fig.height = 11}
+```
+]
+
+---
+
+.left-column[
+## Your turn
+### - weather data
+### - grammar here?
+### - it's ...
+]
+.right-column[
+
+```
+data: otway_more
+layer:
+    1. yintercept: year_average
+       geom: hline
+    2. mapping: x = DAY, ymin = TMIN, ymax = TMAX
+       geom: rect
+    3. mapping: x = DAY, y = TAVG
+       geom: line
+facet: MONTH
+```
+
+```{r otway-month-b, fig.height = 8}
+```
+]
+
+---
+
+class: inverse middle center
+
+# Visual statistical inference
+
+---
+
+---
+
+class: inverse middle center
+
+# Interactive data visualisation <br> on the web
+
+---
+
+## plotly
+
+```{r ggplotly-sx-facet, echo = TRUE, fig.height = 5.5, fig.width = 11, dpi = 72}
+```
+
+---
+
+```{r plotly-sx-facet, echo = TRUE, fig.height = 5.5, fig.width = 11, dpi = 72}
+```
+
+---

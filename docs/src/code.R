@@ -101,9 +101,9 @@ otway_tidy <- otway_weather %>%
   mutate(VALUE = if_else(VALUE < -999, NA_integer_, VALUE)) %>% 
   spread(ELEMENT, VALUE) %>% 
   mutate(
-    TAVG = TAVG / 10,
     TMAX = TMAX / 10,
-    TMIN = TMIN / 10
+    TMIN = TMIN / 10,
+    TAVG = (TMAX + TMIN) / 2,
   )
 head(otway_tidy)
 
@@ -207,12 +207,82 @@ sx_more %>%
   xlab("Time") +
   theme_remark()
 
-## ---- otway
+## ---- otway-line
 otway_tidy %>% 
   ggplot() +
-  geom_rect(aes(
-    xmin = DATE - 1, xmax = DATE + 1, 
-    ymin = TMIN, ymax = TMAX),
-    colour = "white"
+  geom_rect(
+    aes(
+      xmin = DATE - 0.5, xmax = DATE + 0.5, 
+      ymin = TMIN, ymax = TMAX
+    ),
+    colour = "white", fill = "#d95f0e"
   ) +
-  geom_point(aes(x = DATE, y = TAVG))
+  geom_line(aes(x = DATE, y = TAVG), colour = "#525252") +
+  xlab("Date") +
+  ylab("Daily temperature")
+
+## ---- otway-more
+otway_more <- otway_tidy %>% 
+  mutate(
+    MONTH = month(DATE, label = TRUE),
+    DAY = mday(DATE)
+  ) 
+otway_more
+
+## ---- otway-month-a
+yr_avg <- mean(otway_more$TAVG)
+otway_more %>% 
+  ggplot() +
+  geom_hline(yintercept = yr_avg, colour = "#969696", size = 1) +
+  geom_rect(
+    aes(
+      xmin = DAY - 0.5, xmax = DAY + 0.5, 
+      ymin = TMIN, ymax = TMAX
+    ),
+    colour = "white", fill = "#d95f0e"
+  ) +
+  geom_line(aes(x = DAY, y = TAVG), colour = "#525252") +
+  facet_wrap(~ MONTH, ncol = 3) +
+  xlab("Day") +
+  ylab("Daily temperature") +
+  theme_remark()
+
+## ---- otway-month-b
+yr_avg <- mean(otway_more$TAVG)
+otway_more %>% 
+  ggplot() +
+  geom_hline(yintercept = yr_avg, colour = "#969696", size = 1) +
+  geom_rect(
+    aes(
+      xmin = DAY - 0.5, xmax = DAY + 0.5, 
+      ymin = TMIN, ymax = TMAX
+    ),
+    colour = "white", fill = "#d95f0e"
+  ) +
+  geom_line(aes(x = DAY, y = TAVG), colour = "#525252") +
+  facet_wrap(~ MONTH, ncol = 3) +
+  xlab("Day") +
+  ylab("Daily temperature") +
+  theme_remark()
+
+# otway_more %>% 
+#   ggplot(aes(x = DATE, y = PRCP)) +
+#   geom_line()
+
+## ---- ggplotly-sx-facet
+p <- sx %>% 
+  ggplot(aes(Hour, Counts, group = Date)) +
+  geom_line() +
+  facet_wrap(~ Wday, ncol = 2)
+ggplotly(p)
+
+## ---- plotly-sx-facet
+p1 <- sx %>% filter(Wday == "Weekday") %>% 
+  group_by(Date) %>% 
+  plot_ly(x = ~ Hour, y = ~ Counts) %>% 
+  add_lines()
+p2 <- sx %>% filter(Wday == "Weekend") %>% 
+  group_by(Date) %>% 
+  plot_ly(x = ~ Hour, y = ~ Counts) %>% 
+  add_lines()
+layout(subplot(p1, p2, shareY = TRUE), showlegend = FALSE)
