@@ -1,4 +1,4 @@
-library(readr)
+library(tidyverse)
 
 # Melbourne pedestrian data (March 2017)
 download.file("http://www.pedestrian.melbourne.vic.gov.au/datadownload/March_2017.csv",
@@ -18,7 +18,7 @@ dat <- read_fwf(
   )
 )
 sub_dat <- dat %>% 
-  filter(YEAR == 2017) %>% 
+  filter(YEAR == 2016) %>% 
   select(ID:ELEMENT, starts_with("VALUE"))
 
-write_csv(sub_dat, path = "data/weather_2017.csv")
+write_csv(sub_dat, path = "data/weather_2016.csv")

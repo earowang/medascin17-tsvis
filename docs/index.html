@@ -46,7 +46,7 @@ class: inverse middle center
 
 ---
 
-class: middle center
+class: middle
 
 ## What is tidy data?
 
@@ -217,25 +217,29 @@ From the tidy data in the wide format,
 ```r
 ped_long &lt;- ped_2017 %&gt;% 
   gather(Sensor_Name, Counts, `State Library`:Southbank) %&gt;% 
-  mutate(Date = dmy(Date))
+  mutate(
+    Date_Time = dmy_hms(paste(Date, Hour, "00:00")),
+    Date = dmy(Date)
+  )
 ped_long
 ```
 
 ```
-#&gt; # A tibble: 31,992 × 4
+#&gt; # A tibble: 31,992 x 5
 #&gt;          Date  Hour   Sensor_Name Counts
 #&gt;        &lt;date&gt; &lt;int&gt;         &lt;chr&gt;  &lt;int&gt;
-#&gt; 1  2017-03-01     0 State Library    140
-#&gt; 2  2017-03-01     1 State Library     64
-#&gt; 3  2017-03-01     2 State Library     29
-#&gt; 4  2017-03-01     3 State Library     13
-#&gt; 5  2017-03-01     4 State Library     13
-#&gt; 6  2017-03-01     5 State Library     31
-#&gt; 7  2017-03-01     6 State Library     92
-#&gt; 8  2017-03-01     7 State Library    327
-#&gt; 9  2017-03-01     8 State Library    908
+#&gt;  1 2017-03-01     0 State Library    140
+#&gt;  2 2017-03-01     1 State Library     64
+#&gt;  3 2017-03-01     2 State Library     29
+#&gt;  4 2017-03-01     3 State Library     13
+#&gt;  5 2017-03-01     4 State Library     13
+#&gt;  6 2017-03-01     5 State Library     31
+#&gt;  7 2017-03-01     6 State Library     92
+#&gt;  8 2017-03-01     7 State Library    327
+#&gt;  9 2017-03-01     8 State Library    908
 #&gt; 10 2017-03-01     9 State Library    775
-#&gt; # ... with 31,982 more rows
+#&gt; # ... with 31,982 more rows, and 1 more variables:
+#&gt; #   Date_Time &lt;dttm&gt;
 ```
 
 p.s. `tidyr::spread` makes it easy to switch "long" back to "wide":
@@ -257,20 +261,20 @@ ped_long %&gt;%
 .right-column[
 
 ```r
-otway_weather &lt;- read_csv("data/weather_2017.csv")
+otway_weather &lt;- read_csv("data/weather_2016.csv")
 head(otway_weather)
 ```
 
 ```
-#&gt; # A tibble: 6 × 35
+#&gt; # A tibble: 6 x 35
 #&gt;            ID  YEAR MONTH ELEMENT VALUE1 VALUE2 VALUE3
 #&gt;         &lt;chr&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
-#&gt; 1 ASN00090015  2017    01    TMAX    174    153    189
-#&gt; 2 ASN00090015  2017    01    TMIN    144    124    135
-#&gt; 3 ASN00090015  2017    01    PRCP      4      8      0
-#&gt; 4 ASN00090015  2017    01    TAVG    147    143    164
-#&gt; 5 ASN00090015  2017    02    TMAX    188    200    206
-#&gt; 6 ASN00090015  2017    02    TMIN    102    149    155
+#&gt; 1 ASN00090015  2016    01    TMAX    209    195    193
+#&gt; 2 ASN00090015  2016    01    TMIN    175    145    162
+#&gt; 3 ASN00090015  2016    01    PRCP      0      0      0
+#&gt; 4 ASN00090015  2016    01    TAVG    166    174    175
+#&gt; 5 ASN00090015  2016    02    TMAX    217    239    185
+#&gt; 6 ASN00090015  2016    02    TMIN    120    146    149
 #&gt; # ... with 28 more variables: VALUE4 &lt;int&gt;, VALUE5 &lt;int&gt;,
 #&gt; #   VALUE6 &lt;int&gt;, VALUE7 &lt;int&gt;, VALUE8 &lt;int&gt;, VALUE9 &lt;int&gt;,
 #&gt; #   VALUE10 &lt;int&gt;, VALUE11 &lt;int&gt;, VALUE12 &lt;int&gt;,
@@ -290,7 +294,7 @@ head(otway_weather)
 .left-column[
 ## Otway weather data .red[*]
 ### - what variables?
-### - tidy up
+### - tidying
 ]
 .right-column[
 
@@ -322,7 +326,7 @@ otway_weather %&gt;%
 .left-column[
 ## Otway weather data .red[*]
 ### - what variables?
-### - tidy up
+### - tidying
 ]
 .right-column[
 
@@ -361,7 +365,7 @@ otway_weather %&gt;%
 .left-column[
 ## Otway weather data .red[*]
 ### - what variables?
-### - tidy up
+### - tidying
 ]
 .right-column[
 
@@ -375,24 +379,25 @@ otway_weather %&gt;%
   arrange(DATE) %&gt;% 
   select(ID, DATE, ELEMENT, VALUE) %&gt;% 
   filter(!(is.na(DATE))) %&gt;% 
+  mutate(VALUE = if_else(VALUE == -999.90, NA_integer_, VALUE)) %&gt;% 
   spread(ELEMENT, VALUE)
 ```
 
 ```
-#&gt; # A tibble: 151 × 6
+#&gt; # A tibble: 366 x 6
 #&gt;             ID       DATE  PRCP  TAVG  TMAX  TMIN
-#&gt; *        &lt;chr&gt;     &lt;date&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-#&gt; 1  ASN00090015 2017-01-01     4   147   174   144
-#&gt; 2  ASN00090015 2017-01-02     8   143   153   124
-#&gt; 3  ASN00090015 2017-01-03     0   164   189   135
-#&gt; 4  ASN00090015 2017-01-04     0   178   204   147
-#&gt; 5  ASN00090015 2017-01-05     0   181   195   167
-#&gt; 6  ASN00090015 2017-01-06     0   203   229   170
-#&gt; 7  ASN00090015 2017-01-07     0   244   321   184
-#&gt; 8  ASN00090015 2017-01-08     0   172   207   181
-#&gt; 9  ASN00090015 2017-01-09     0   166   200   150
-#&gt; 10 ASN00090015 2017-01-10     0   172   198   128
-#&gt; # ... with 141 more rows
+#&gt;  *       &lt;chr&gt;     &lt;date&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+#&gt;  1 ASN00090015 2016-01-01     0   166   209   175
+#&gt;  2 ASN00090015 2016-01-02     0   174   195   145
+#&gt;  3 ASN00090015 2016-01-03     0   175   193   162
+#&gt;  4 ASN00090015 2016-01-04     0   177   202   167
+#&gt;  5 ASN00090015 2016-01-05     0   178   206   161
+#&gt;  6 ASN00090015 2016-01-06     0   171   203   165
+#&gt;  7 ASN00090015 2016-01-07     0   158   197   148
+#&gt;  8 ASN00090015 2016-01-08     0   156   188   142
+#&gt;  9 ASN00090015 2016-01-09     0   157   190   113
+#&gt; 10 ASN00090015 2016-01-10     0   186   254   119
+#&gt; # ... with 356 more rows
 ```
 ]
 
@@ -401,7 +406,7 @@ otway_weather %&gt;%
 .left-column[
 ## Otway weather data .red[*]
 ### - what variables?
-### - tidy up
+### - tidying
 ]
 .right-column[
 
@@ -415,6 +420,7 @@ otway_tidy &lt;- otway_weather %&gt;%
   arrange(DATE) %&gt;% 
   select(ID, DATE, ELEMENT, VALUE) %&gt;% 
   filter(!(is.na(DATE))) %&gt;% 
+  mutate(VALUE = if_else(VALUE &lt; -999, NA_integer_, VALUE)) %&gt;% 
   spread(ELEMENT, VALUE) %&gt;% 
   mutate(
     TAVG = TAVG / 10,
@@ -425,16 +431,242 @@ head(otway_tidy)
 ```
 
 ```
-#&gt; # A tibble: 6 × 6
+#&gt; # A tibble: 6 x 6
 #&gt;            ID       DATE  PRCP  TAVG  TMAX  TMIN
 #&gt;         &lt;chr&gt;     &lt;date&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 ASN00090015 2017-01-01     4  14.7  17.4  14.4
-#&gt; 2 ASN00090015 2017-01-02     8  14.3  15.3  12.4
-#&gt; 3 ASN00090015 2017-01-03     0  16.4  18.9  13.5
-#&gt; 4 ASN00090015 2017-01-04     0  17.8  20.4  14.7
-#&gt; 5 ASN00090015 2017-01-05     0  18.1  19.5  16.7
-#&gt; 6 ASN00090015 2017-01-06     0  20.3  22.9  17.0
+#&gt; 1 ASN00090015 2016-01-01     0  16.6  20.9  17.5
+#&gt; 2 ASN00090015 2016-01-02     0  17.4  19.5  14.5
+#&gt; 3 ASN00090015 2016-01-03     0  17.5  19.3  16.2
+#&gt; 4 ASN00090015 2016-01-04     0  17.7  20.2  16.7
+#&gt; 5 ASN00090015 2016-01-05     0  17.8  20.6  16.1
+#&gt; 6 ASN00090015 2016-01-06     0  17.1  20.3  16.5
 ```
+]
+
+---
+
+class: inverse middle center
+
+# A grammar of graphics
+
+---
+
+class: middle
+
+## What is a grammar of graphics?
+
+* A conceptual framework for mapping data to graphical form
+* The analogue of doing a functional mapping of random variables. For example,
+  `\(n\)` independent and identically distributed RVs `\(X_1, \ldots, X_n\)`, the mean
+  is defined as 
+  `$$\bar{X} = \frac{1}{n} \sum_{i = 1}^{n} X_{i}.$$`
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+]
+.right-column[
+
+```
+data: ped_long
+layer:
+    mapping: x = Date_Time, y = Counts
+    geom: line
+facet: Sensor_Name
+```
+
+&lt;img src="figure/ped-ggplot-1-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+]
+.right-column[
+
+```
+data: ped_long
+layer:
+    mapping: x = Date_Time, y = Counts, colour = Sensor_Name
+    geom: line
+facet: Sensor_Name
+```
+
+&lt;img src="figure/ped-ggplot-2-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+
+```r
+wday &lt;- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+sx &lt;- ped_long %&gt;% 
+  filter(Sensor_Name == "Southern Cross Station") %&gt;% 
+  mutate(
+    Wday = wday2(Date, label = TRUE, abbr = FALSE),
+    Wday = if_else(Wday %in% wday, "Weekday", "Weekend"),
+    Wday = ordered(Wday)
+  )
+sx
+```
+
+```
+#&gt; # A tibble: 744 x 6
+#&gt;          Date  Hour            Sensor_Name Counts
+#&gt;        &lt;date&gt; &lt;int&gt;                  &lt;chr&gt;  &lt;int&gt;
+#&gt;  1 2017-03-01     0 Southern Cross Station     16
+#&gt;  2 2017-03-01     1 Southern Cross Station      8
+#&gt;  3 2017-03-01     2 Southern Cross Station      3
+#&gt;  4 2017-03-01     3 Southern Cross Station      4
+#&gt;  5 2017-03-01     4 Southern Cross Station      1
+#&gt;  6 2017-03-01     5 Southern Cross Station     96
+#&gt;  7 2017-03-01     6 Southern Cross Station    581
+#&gt;  8 2017-03-01     7 Southern Cross Station   1847
+#&gt;  9 2017-03-01     8 Southern Cross Station   3863
+#&gt; 10 2017-03-01     9 Southern Cross Station   2063
+#&gt; # ... with 734 more rows, and 2 more variables:
+#&gt; #   Date_Time &lt;dttm&gt;, Wday &lt;ord&gt;
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross
+layer:
+    mapping: x = Hour, y = Counts, colour = Wday
+    geom: line
+```
+
+&lt;img src="figure/x-colour-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross
+layer:
+    mapping: x = Hour, y = Counts
+    geom: line
+facet: Wday
+```
+
+&lt;img src="figure/x-facet-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+
+```r
+labour &lt;- "Labour Day" # 2013-03-13
+adele &lt;- "Adele Day" # 2017-03-18 to 19
+# Justin Bieber's gig 2017-03-10
+sx_more &lt;- sx %&gt;% 
+  mutate(
+    Wday = fct_expand(Wday, labour, adele),
+    Wday = if_else(
+      Date == ymd("2017-03-13"), ordered(labour, levels(Wday)), Wday
+    ),
+    Wday = if_else(
+      Date %in% ymd(c("2017-03-18", "2017-03-19")), 
+      ordered(adele, levels(Wday)), Wday
+    )
+  ) 
+head(sx_more)
+```
+
+```
+#&gt; # A tibble: 6 x 6
+#&gt;         Date  Hour            Sensor_Name Counts
+#&gt;       &lt;date&gt; &lt;int&gt;                  &lt;chr&gt;  &lt;int&gt;
+#&gt; 1 2017-03-01     0 Southern Cross Station     16
+#&gt; 2 2017-03-01     1 Southern Cross Station      8
+#&gt; 3 2017-03-01     2 Southern Cross Station      3
+#&gt; 4 2017-03-01     3 Southern Cross Station      4
+#&gt; 5 2017-03-01     4 Southern Cross Station      1
+#&gt; 6 2017-03-01     5 Southern Cross Station     96
+#&gt; # ... with 2 more variables: Date_Time &lt;dttm&gt;, Wday &lt;ord&gt;
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross-more
+layer:
+    mapping: x = Hour, y = Counts
+    geom: line
+facet: Wday
+```
+
+&lt;img src="figure/x-more-p-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross-more
+layer:
+    mapping: x = Hour, y = Counts
+    geom: line
+facet: Wday
+coord: polar
+```
+
+&lt;img src="figure/x-polar-1.png" style="display: block; margin: auto;" /&gt;
+
 ]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -52,7 +52,7 @@ class: inverse middle center
 
 ---
 
-class: middle center
+class: middle
 
 ## What is tidy data?
 
@@ -233,5 +233,169 @@ class: inverse middle center
 
 ---
 
+class: middle
+
+## What is a grammar of graphics?
+
+* A conceptual framework for mapping data to graphical form
+* The analogue of doing a functional mapping of random variables. For example,
+  $n$ independent and identically distributed RVs $X_1, \ldots, X_n$, the mean
+  is defined as 
+  $$\bar{X} = \frac{1}{n} \sum_{i = 1}^{n} X_{i}.$$
 
 ---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+]
+.right-column[
+
+```
+data: ped_long
+layer:
+    mapping: x = Date_Time, y = Counts
+    geom: line
+facet: Sensor_Name
+```
+
+```{r ped-ggplot-1}
+```
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+]
+.right-column[
+
+```
+data: ped_long
+layer:
+    mapping: x = Date_Time, y = Counts, colour = Sensor_Name
+    geom: line
+facet: Sensor_Name
+```
+
+```{r ped-ggplot-2}
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```{r southern-x, echo = TRUE}
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross
+layer:
+    mapping: x = Hour, y = Counts, colour = Wday
+    geom: line
+```
+
+```{r x-colour, fig.height = 7}
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross
+layer:
+    mapping: x = Hour, y = Counts
+    geom: line
+facet: Wday
+```
+
+```{r x-facet, fig.height = 6}
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```{r x-more, echo = TRUE}
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross-more
+layer:
+    mapping: x = Hour, y = Counts
+    geom: line
+facet: Wday
+```
+
+```{r x-more-p}
+```
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - Southern X
+]
+.right-column[
+
+```
+data: southern-cross-more
+layer:
+    mapping: x = Hour, y = Counts
+    geom: line
+facet: Wday
+coord: polar
+```
+
+```{r x-polar}
+```
+
+]
