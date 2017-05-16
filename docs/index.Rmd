@@ -58,7 +58,7 @@ class: middle
 ---
 
 .left-column[
-## Melbourne pedestrian data .red[*]
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
 ]
 .right-column[
@@ -72,7 +72,7 @@ class: middle
 ---
 
 .left-column[
-## Melbourne pedestrian data .red[*]
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
 ### - sensor map
 ]
@@ -85,7 +85,7 @@ class: middle
 ---
 
 .left-column[
-## Melbourne pedestrian data .red[*]
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
 ### - sensor map
 ### - hourly counts
@@ -99,7 +99,7 @@ class: middle
 ---
 
 .left-column[
-## Melbourne pedestrian data .red[*]
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
 ### - sensor map
 ### - hourly counts
@@ -121,12 +121,12 @@ autoplot(sub_ped_ts, facet = TRUE)
 ---
 
 .left-column[
-## Melbourne pedestrian data .red[*]
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
 ### - sensor map
 ### - hourly counts
 ### - `autoplot`
-### - issues?
+### - thoughts? `r emo::ji("thinking")`
 ]
 .right-column[
 From the tidy data in the wide format,
@@ -139,12 +139,12 @@ From the tidy data in the wide format,
 ---
 
 .left-column[
-## Melbourne pedestrian data .red[*]
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
 ### - sensor map
 ### - hourly counts
 ### - `autoplot`
-### - issues?
+### - thoughts? `r emo::ji("thinking")`
 ### - tidy data
 ]
 .right-column[
@@ -164,7 +164,7 @@ ped_long %>%
 ---
 
 .left-column[
-## Otway weather data .red[*]
+## Otway weather data `r emo::ji("sunny")`
 ### - what variables?
 ]
 .right-column[
@@ -177,9 +177,9 @@ ped_long %>%
 ---
 
 .left-column[
-## Otway weather data .red[*]
+## Otway weather data `r emo::ji("sunny")`
 ### - what variables?
-### - tidying
+### - tidying `r emo::ji("hammer_and_wrench")`
 ]
 .right-column[
 ```{r otway-tidy-1, echo = TRUE}
@@ -189,9 +189,10 @@ ped_long %>%
 ---
 
 .left-column[
-## Otway weather data .red[*]
+## Otway weather data `r emo::ji("sunny")`
 ### - what variables?
-### - tidying
+### - tidying `r emo::ji("hammer_and_wrench")`
+
 ]
 .right-column[
 ```{r otway-tidy-2, echo = TRUE}
@@ -201,9 +202,10 @@ ped_long %>%
 ---
 
 .left-column[
-## Otway weather data .red[*]
+## Otway weather data `r emo::ji("sunny")`
 ### - what variables?
-### - tidying
+### - tidying `r emo::ji("hammer_and_wrench")`
+
 ]
 .right-column[
 ```{r otway-tidy-3, echo = TRUE}
@@ -213,9 +215,10 @@ ped_long %>%
 ---
 
 .left-column[
-## Otway weather data .red[*]
+## Otway weather data `r emo::ji("sunny")`
 ### - what variables?
-### - tidying
+### - tidying `r emo::ji("hammer_and_wrench")`
+
 ]
 .right-column[
 ```{r otway-tidy, echo = TRUE}
@@ -286,7 +289,7 @@ facet: Sensor_Name
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - southern x
+### - southern x `r emo::ji("station")`
 ]
 .right-column[
 
@@ -300,7 +303,7 @@ facet: Sensor_Name
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - southern x
+### - southern x `r emo::ji("station")`
 ]
 .right-column[
 
@@ -321,7 +324,7 @@ layer:
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - southern x
+### - southern x `r emo::ji("station")`
 ]
 .right-column[
 
@@ -343,7 +346,7 @@ facet: Wday
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - southern x
+### - southern x `r emo::ji("station")`
 ]
 .right-column[
 
@@ -357,7 +360,7 @@ facet: Wday
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - southern x
+### - southern x `r emo::ji("station")`
 ]
 .right-column[
 
@@ -379,7 +382,7 @@ facet: Wday
 .left-column[
 ## More on pedestrian data
 ### - `ggplot2`
-### - southern x
+### - southern x `r emo::ji("station")`
 ]
 .right-column[
 
@@ -535,7 +538,7 @@ wanderer4melb::launch_app()
 
 class: inverse middle center
 
-# More?
+# Done! `r emo::ji("tada")` `r emo::ji("confetti_ball")` hmm... not yet?
 
 ---
 
@@ -547,4 +550,4 @@ class: inverse middle center
     + Yihui is giving a tutorial on [R Markdown Ecosystem](http://www.datasciencemelbourne.com/medascin2017/session/r-markdown-ecosystem-reports-papers-dashboards-books-websites-and-presentations/) (check it out).
 * The R packages used for the slides to make analysis easier and more fun: `ggmap`,
   `plotly`, `stringr`, `forcats`, `forecast`, `tidyverse`, `lubridate`, `broom`,
-  `zoo`, `shiny`
+  `zoo`, `shiny`, `emo`
