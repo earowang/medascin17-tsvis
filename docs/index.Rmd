@@ -456,6 +456,10 @@ class: inverse middle center
 
 ---
 
+## Workflow
+
+---
+
 class: inverse middle center
 
 # Interactive data visualisation <br> on the web
@@ -499,19 +503,48 @@ class: inverse middle center
 ---
 
 .left-column[
-## shiny
-### - app
+## bind all together
+### - shiny app
+]
+.right-column[
+
+[`wanderer4melb`](https://github.com/earowang/wanderer4melb) is a shiny app for 
+visualising Melbourne pedestrian and weather data in 2016.
+
+![demo](img/wanderer4melb.png)
+
+```r
+# install.packages("devtools")
+devtools::install_github("earowang/wanderer4melb")
+wanderer4melb::launch_app()
+```
+
+]
+
+---
+
+.left-column[
+## bind all together
+### - shiny app
+### - calendar plots
 ]
 .right-column[
 ]
 
 ---
 
-.left-column[
-## shiny
-### - app
-### - calendar plots
-]
-.right-column[
-]
+class: inverse middle center
 
+# More?
+
+---
+
+## Acknowledgements
+
+* Slides powered by the R package [xaringan](https://github.com/yihui/xaringan)
+  for [remark.js](https://remarkjs.com/) and [R Markdown](https://rmarkdown.rstudio.com)
+    + The source files to reproduce the slides are available [here](https://github.com/earowang/medascin17-tsvis).
+    + Yihui is giving a tutorial on [R Markdown Ecosystem](http://www.datasciencemelbourne.com/medascin2017/session/r-markdown-ecosystem-reports-papers-dashboards-books-websites-and-presentations/) (check it out).
+* The R packages used for the slides to make analysis easier and more fun: `ggmap`,
+  `plotly`, `stringr`, `forcats`, `forecast`, `tidyverse`, `lubridate`, `broom`,
+  `zoo`, `shiny`
