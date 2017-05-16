@@ -25,17 +25,13 @@ opts_chunk$set(
 read_chunk('src/code.R')
 ```
 
-## Bio
-
----
-
 ## Agenda
 
 * Why `tidyverse`? Tidy data
 * What does `gg` in `ggplot2` stand for? A grammar of graphics
 * How do we know if what we see really is there? Visual statistical inference
 * Interactive data visualisation on the web
-    + plotly: `ggplotly()`
+    + plotly: `ggplotly()`, `plot_ly`, animation
     + shiny app: `wanderer4melb`
 
 ```{r load-library}
@@ -115,7 +111,7 @@ class: middle
 ped_ts <- ts(ped_2017[, -c(1, 2)], frequency = 24)
 selected_id <- c(1, 10, 18, 19, 24)
 sub_ped_ts <- ped_ts[, selected_id]
-autoplot(sub_ped_ts, facet = TRUE) + theme_remark()
+autoplot(sub_ped_ts, facet = TRUE)
 ```
 
 ```{r ped-ts, fig.height = 10}
@@ -172,6 +168,7 @@ ped_long %>%
 ### - what variables?
 ]
 .right-column[
+
 ```{r otway-weather, echo = TRUE}
 ```
 .footnote[.red[*] source: [global historical climatology network](https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/)]
@@ -438,7 +435,7 @@ data: otway_more
 layer:
     1. yintercept: year_average
        geom: hline
-    2. mapping: x = DAY, ymin = TMIN, ymax = TMAX
+    2. mapping: xmin = DAY-, xmax = DAY+, ymin = TMIN, ymax = TMAX
        geom: rect
     3. mapping: x = DAY, y = TAVG
        geom: line
@@ -465,14 +462,56 @@ class: inverse middle center
 
 ---
 
+.left-column[
 ## plotly
-
-```{r ggplotly-sx-facet, echo = TRUE, fig.height = 5.5, fig.width = 11, dpi = 72}
+### - `ggplotly`
+]
+.right-column[
+```{r ggplotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8, dpi = 72}
 ```
+]
 
 ---
 
-```{r plotly-sx-facet, echo = TRUE, fig.height = 5.5, fig.width = 11, dpi = 72}
+.left-column[
+## plotly
+### - `ggplotly`
+### - `plot_ly`
+]
+.right-column[
+```{r plotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8, dpi = 72}
 ```
+]
 
 ---
+
+.left-column[
+## plotly
+### - `ggplotly`
+### - `plot_ly`
+### - animation
+]
+.right-column[
+```{r animate, echo = TRUE, fig.height = 4, fig.width = 8, dpi = 72}
+```
+]
+
+---
+
+.left-column[
+## shiny
+### - app
+]
+.right-column[
+]
+
+---
+
+.left-column[
+## shiny
+### - app
+### - calendar plots
+]
+.right-column[
+]
+

@@ -85,7 +85,7 @@ otway_weather %>%
   arrange(DATE) %>% 
   select(ID, DATE, ELEMENT, VALUE) %>% 
   filter(!(is.na(DATE))) %>% 
-  mutate(VALUE = if_else(VALUE == -999.90, NA_integer_, VALUE)) %>% 
+  mutate(VALUE = if_else(VALUE < -999, NA_integer_, VALUE)) %>% 
   spread(ELEMENT, VALUE)
 
 ## ---- otway-tidy
@@ -286,3 +286,18 @@ p2 <- sx %>% filter(Wday == "Weekend") %>%
   plot_ly(x = ~ Hour, y = ~ Counts) %>% 
   add_lines()
 layout(subplot(p1, p2, shareY = TRUE), showlegend = FALSE)
+
+## ---- animate
+a10_df <- broom::tidy(zoo::as.zoo(fpp2::a10)) %>% 
+  mutate(
+    year = year(index),
+    month = month(index)
+  )
+p3 <- a10_df %>% 
+  ggplot(aes(month, value)) +
+  geom_line(aes(group = year), alpha = 0.2) +
+  geom_line(aes(frame = year, colour = as.factor(year)), size = 1) +
+  scale_x_continuous(breaks = 1:12)
+animation_opts(
+  ggplotly(p3), frame = 1000, easing = "elastic"
+)
