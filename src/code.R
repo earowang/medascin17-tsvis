@@ -47,6 +47,9 @@ selected_id <- c(1, 10, 18, 19, 24)
 sub_ped_ts <- ped_ts[, selected_id]
 autoplot(sub_ped_ts, facet = TRUE) + theme_remark()
 
+## ---- ped-ts-1
+class(sub_ped_ts); tsp(sub_ped_ts)
+
 ## ---- ped-long
 ped_long <- ped_2017 %>% 
   gather(Sensor_Name, Counts, `State Library`:Southbank) %>% 
@@ -301,3 +304,19 @@ p3 <- a10_df %>%
 animation_opts(
   ggplotly(p3), frame = 1000, easing = "elastic"
 )
+
+## ---- calendar-df
+sx_cal <- sx %>% 
+  frame_calendar(
+    x = Hour, y = Counts, date = Date, nrow = 1, ncol = 1
+  )
+sx_cal
+
+## ---- calendar-ggplot
+p_sx <- sx_cal %>% 
+  ggplot(aes(.x, .y, group = .group_id, colour = Wday)) +
+  geom_line()
+p_sx
+
+## ---- calendar-prettify
+prettify(p_sx)

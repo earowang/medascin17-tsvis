@@ -1,5 +1,5 @@
 ---
-title: "Tidy data and statistical visualisation <br> to support exploration of temporal data"
+title: "Tidy data and statistical visualisation <br> to support exploration of temporal data with R"
 type: "Workshop"
 author: "Earo Wang"
 date: "May 29, 2017 <br> <br> Slides on http://bit.ly/tsvis17"
@@ -126,14 +126,29 @@ autoplot(sub_ped_ts, facet = TRUE)
 ### - sensor map
 ### - hourly counts
 ### - `autoplot`
-### - thoughts? `r emo::ji("thinking")`
+### - pros & cons
 ]
 .right-column[
-From the tidy data in the wide format,
 
-* how to join the pedestrian sensor locations by the sensor names?
-* how to retrieve the temporal components and plot the sub-series b/t weekdays
-  & weekends?
+A `ts` object associates with a `tsp` attribute as metadata.
+
+```{r ped-ts-1, echo = TRUE}
+```
+
+.pull-left[
+**Pros:**
+
+* to automatically create the index variable for equally spaced time series
+* to retrieve the structure of information at run time for specialist methods
+  (e.g. `auto.arima` or `ets`)
+]
+.pull-right[
+**Cons:**
+
+* hard to join the pedestrian sensor locations by the sensor names
+* hard to dissect the temporal components and plot the sub-series b/t weekdays
+  & weekends
+]
 ]
 
 ---
@@ -144,7 +159,7 @@ From the tidy data in the wide format,
 ### - sensor map
 ### - hourly counts
 ### - `autoplot`
-### - thoughts? `r emo::ji("thinking")`
+### - pros & cons
 ### - tidy data
 ]
 .right-column[
@@ -262,6 +277,11 @@ facet: Sensor_Name
 ```{r ped-ggplot-1}
 ```
 ]
+
+
+???
+
+as you can see, it provides short but comprehensive vocabulary for describing a plot.
 
 ---
 
@@ -529,9 +549,77 @@ wanderer4melb::launch_app()
 .left-column[
 ## bind all together
 ### - shiny app
-### - calendar plots
+### - sugrrants
 ]
 .right-column[
+
+`sugrrants` `r emo::ji("ant")` is an R package (under development) that supports 
+graphics for analysing time series data.
+
+```r
+devtools::install_github("earowang/sugrrants")
+library(sugrrants)
+```
+
+* It fits into the tidyverse and grammar of graphics suite of methods for exploring
+  temporal data.
+* Calendar-based graphics are useful for visualising people's daily schedules, and
+  `frame_calendar` `r emo::ji("spiral_calendar")` is made available for this.
+
+If you find a bug or wanna suggest a new feature, please report/propose it on 
+the Github page ([click me](https://github.com/earowang/sugrrants/issues)). Thanks.
+
+]
+
+---
+
+.left-column[
+## bind all together
+### - shiny app
+### - sugrrants
+### - calendar plot
+]
+.right-column[
+
+`frame_calendar` rearranges the data into a calendar format using linear algebra tools.
+
+```{r calendar-df, echo = TRUE}
+```
+
+]
+
+---
+
+.left-column[
+## bind all together
+### - shiny app
+### - sugrrants
+### - calendar plot
+]
+.right-column[
+
+`ggplot2` takes care of plotting a `data.frame` or `tibble` as usual.
+
+```{r calendar-ggplot, echo = TRUE}
+```
+
+]
+
+---
+
+.left-column[
+## bind all together
+### - shiny app
+### - sugrrants
+### - calendar plot
+]
+.right-column[
+
+`prettify` takes a `ggplot` object and then makes the calendar more readable.
+
+```{r calendar-prettify, echo = TRUE}
+```
+
 ]
 
 ---
