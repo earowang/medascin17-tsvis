@@ -28,8 +28,11 @@ read_chunk('src/code.R')
 ## Agenda
 
 * Why `tidyverse`? Tidy data
+
+
 * What does `gg` in `ggplot2` stand for? A grammar of graphics
-* How do we know if what we see really is there? Visual statistical inference
+
+
 * Interactive data visualisation on the web
     + plotly: `ggplotly()`, `plot_ly`, animation
     + shiny app: `wanderer4melb`
@@ -54,6 +57,11 @@ class: middle
 * Each variable forms a column.
 * Each observation forms a row.
 * Each type of observational unit forms a table.
+
+???
+
+tidyverse assumes the underlying data structure is a rectangular cases-by-variables
+data layout.
 
 ---
 
@@ -145,11 +153,16 @@ A `ts` object associates with a `tsp` attribute as metadata.
 .pull-right[
 **Cons:**
 
-* hard to join the pedestrian sensor locations by the sensor names
-* hard to dissect the temporal components and plot the sub-series b/t weekdays
-  & weekends
+* hard to add other complementary variables (e.g. longitudes and latitudes) 
+  to the data
+* hard to dissect temporal components and examine different seasonal patterns 
+  (e.g. b/t weekdays & weekends)
 ]
 ]
+
+???
+
+hard to handle missing values
 
 ---
 
@@ -165,13 +178,6 @@ A `ts` object associates with a `tsp` attribute as metadata.
 .right-column[
 
 ```{r ped-long, echo = TRUE}
-```
-
-p.s. `tidyr::spread` makes it easy to switch "long" back to "wide":
-
-```{r ped-spread, echo = TRUE, eval = FALSE}
-ped_long %>%
-  spread(Sensor_Name, Counts)
 ```
 
 ]
@@ -252,11 +258,11 @@ class: middle
 
 ## What is a grammar of graphics?
 
-* A conceptual framework for mapping data to graphical form
+* A conceptual framework for mapping variables to graphical elements
 * The analogue of doing a functional mapping of random variables. For example,
   $n$ independent and identically distributed RVs $X_1, \ldots, X_n$, the mean
   is defined as 
-  $$\bar{X} = \frac{1}{n} \sum_{i = 1}^{n} X_{i}.$$
+  $$\bar{X} = \frac{1}{n} \sum_{i = 1}^{n} X_{i} \qquad S_{n-1} = \frac{1}{n-1} \sum_{i = 1}^{n} \left(X_i - \bar{X} \right)^2.$$
 
 ---
 
@@ -274,7 +280,13 @@ layer:
 facet: Sensor_Name
 ```
 
-```{r ped-ggplot-1}
+```{r ped-ggplot-1, fig.height = 8}
+```
+
+```r
+ggplot(ped_long, aes(x = Date_Time, y = Counts)) +
+  geom_line() +
+  facet_grid(Sensor_Name ~ ., scale = "free_y")
 ```
 ]
 
@@ -299,9 +311,14 @@ layer:
 facet: Sensor_Name
 ```
 
-```{r ped-ggplot-2}
+```{r ped-ggplot-2, fig.height = 8}
 ```
 
+```r
+ggplot(ped_long, aes(x = Date_Time, y = Counts)) +
+  geom_line(aes(colour = Sensor_Name)) +
+  facet_grid(Sensor_Name ~ ., scale = "free_y")
+```
 ]
 
 ---
@@ -337,6 +354,11 @@ layer:
 ```{r x-colour, fig.height = 7}
 ```
 
+```r
+ggplot(sx, aes(Hour, Counts, group = Date)) +
+  geom_line(aes(colour = Wday))
+```
+
 ]
 
 ---
@@ -359,6 +381,10 @@ facet: Wday
 ```{r x-facet, fig.height = 6}
 ```
 
+```r
+ggplot(sx, aes(Hour, Counts, group = Date)) +
+  facet_wrap(~ Wday, ncol = 2)
+```
 ]
 
 ---
@@ -392,9 +418,13 @@ layer:
 facet: Wday
 ```
 
-```{r x-more-p}
+```{r x-more-p, fig.height = 8.5}
 ```
 
+```r
+ggplot(sx_more, aes(Hour, Counts, group = Date)) +
+  facet_wrap(~ Wday, ncol = 2)
+```
 ]
 
 ---
@@ -415,9 +445,14 @@ facet: Wday
 coord: polar
 ```
 
-```{r x-polar}
+```{r x-polar, fig.height = 8}
 ```
 
+```r
+ggplot(sx_more, aes(Hour, Counts, group = Date)) +
+  facet_wrap(~ Wday, ncol = 2) +
+  coord_polar()
+```
 ]
 
 ---
@@ -460,7 +495,7 @@ layer:
        geom: hline
     2. mapping: xmin = DAY-, xmax = DAY+, ymin = TMIN, ymax = TMAX
        geom: rect
-    3. mapping: x = DAY, y = TAVG
+    3. mapping: x = DAY, y = NAVG
        geom: line
 facet: MONTH
 ```
@@ -468,14 +503,6 @@ facet: MONTH
 ```{r otway-month-b, fig.height = 8}
 ```
 ]
-
----
-
-class: inverse middle center
-
-# Visual statistical inference
-
----
 
 ---
 
@@ -519,7 +546,23 @@ class: inverse middle center
 ### - animation
 ]
 .right-column[
-```{r animate, echo = TRUE, fig.height = 4, fig.width = 8, dpi = 72}
+
+```r
+a10_df <- broom::tidy(zoo::as.zoo(fpp2::a10)) %>% 
+  mutate(
+    year = year(index),
+    month = month(index)
+  )
+p3 <- a10_df %>% 
+  ggplot(aes(month, value)) +
+  geom_line(aes(group = year), alpha = 0.2) +
+  geom_line(aes(frame = year, colour = as.factor(year))) +
+animation_opts(
+  ggplotly(p3), frame = 1000, easing = "elastic"
+)
+```
+
+```{r animate, echo = FALSE, fig.height = 4.5, fig.width = 8, dpi = 72}
 ```
 ]
 
@@ -531,7 +574,7 @@ class: inverse middle center
 ]
 .right-column[
 
-[`wanderer4melb`](https://github.com/earowang/wanderer4melb) is a shiny app for 
+`wanderer4melb`([click me](https://github.com/earowang/wanderer4melb)) is a shiny app for 
 visualising Melbourne pedestrian and weather data in 2016.
 
 ![demo](img/wanderer4melb.png)
@@ -567,7 +610,7 @@ library(sugrrants)
   `frame_calendar` `r emo::ji("spiral_calendar")` is made available for this.
 
 If you find a bug or wanna suggest a new feature, please report/propose it on 
-the Github page ([click me](https://github.com/earowang/sugrrants/issues)). Thanks.
+the [Github page](https://github.com/earowang/sugrrants/issues). Thanks.
 
 ]
 
@@ -615,7 +658,7 @@ the Github page ([click me](https://github.com/earowang/sugrrants/issues)). Than
 ]
 .right-column[
 
-`prettify` takes a `ggplot` object and then makes the calendar more readable.
+`prettify` takes a `ggplot` object and then makes the calendar plot more readable.
 
 ```{r calendar-prettify, echo = TRUE}
 ```
@@ -630,6 +673,8 @@ class: inverse middle center
 
 ---
 
+class: middle
+
 ## Acknowledgements
 
 * Slides powered by the R package [xaringan](https://github.com/yihui/xaringan)
@@ -639,3 +684,9 @@ class: inverse middle center
 * The R packages used for the slides to make analysis easier and more fun: `ggmap`,
   `plotly`, `stringr`, `forcats`, `forecast`, `tidyverse`, `lubridate`, `broom`,
   `zoo`, `shiny`, `emo`
+
+---
+
+class: inverse middle center
+
+# This work is licensed under <br> [<i class="fa fa-creative-commons" aria-hidden="true"></i> Creative Commons](https://creativecommons.org/licenses/by-nc-nd/3.0/us/)

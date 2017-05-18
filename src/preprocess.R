@@ -1,3 +1,4 @@
+library(lubridate)
 library(tidyverse)
 
 # Melbourne pedestrian data (March 2017)
@@ -22,3 +23,17 @@ sub_dat <- dat %>%
   select(ID:ELEMENT, starts_with("VALUE"))
 
 write_csv(sub_dat, path = "data/weather_2016.csv")
+
+# weather <- read_rds("data/au_weather1947.rds")
+# melb_weather <- weather %>% 
+#   filter(station == "MELBOURNE REGIONAL OFFICE") %>% 
+#   mutate(
+#     YEAR = year(date),
+#     MONTH = month(date),
+#     TAVG = (TMIN + TMAX) / 2
+#   ) %>% 
+#   filter(YEAR != 2015) %>% 
+#   group_by(YEAR, MONTH) %>% 
+#   summarise(AVERAGE = mean(TAVG, na.rm = TRUE))
+#
+# write_csv(melb_weather, path = "data/melb_weather.csv")

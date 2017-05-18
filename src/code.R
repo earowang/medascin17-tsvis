@@ -20,9 +20,12 @@ theme_remark <- function() {
 theme_set(theme_remark())
 
 ## ---- ped-loc
-ped_loc <- read_csv("data/Pedestrian_sensor_locations.csv")
+ped_loc <- read_csv("data/sensor_locations.csv")
 ped_loc %>% 
-  select(`Sensor ID`, `Sensor Description`, Longitude, Latitude)
+  select(
+    `Sensor ID`, `Sensor Description`, 
+    Longitude, Latitude
+  )
 
 ## ---- ped-map
 melb_map <- get_map(
@@ -52,7 +55,10 @@ class(sub_ped_ts); tsp(sub_ped_ts)
 
 ## ---- ped-long
 ped_long <- ped_2017 %>% 
-  gather(Sensor_Name, Counts, `State Library`:Southbank) %>% 
+  gather(
+    Sensor_Name, Counts, 
+    `State Library`:Southbank
+  ) %>% 
   mutate(
     Date_Time = dmy_hms(paste(Date, Hour, "00:00")),
     Date = dmy(Date)
@@ -88,7 +94,10 @@ otway_weather %>%
   arrange(DATE) %>% 
   select(ID, DATE, ELEMENT, VALUE) %>% 
   filter(!(is.na(DATE))) %>% 
-  mutate(VALUE = if_else(VALUE < -999, NA_integer_, VALUE)) %>% 
+  mutate(
+    VALUE = if_else(VALUE < -999, NA_integer_, VALUE),
+    VALUE = VALUE / 10
+  ) %>% 
   spread(ELEMENT, VALUE)
 
 ## ---- otway-tidy
@@ -101,13 +110,12 @@ otway_tidy <- otway_weather %>%
   arrange(DATE) %>% 
   select(ID, DATE, ELEMENT, VALUE) %>% 
   filter(!(is.na(DATE))) %>% 
-  mutate(VALUE = if_else(VALUE < -999, NA_integer_, VALUE)) %>% 
-  spread(ELEMENT, VALUE) %>% 
   mutate(
-    TMAX = TMAX / 10,
-    TMIN = TMIN / 10,
-    TAVG = (TMAX + TMIN) / 2,
-  )
+    VALUE = if_else(VALUE < -999, NA_integer_, VALUE),
+    VALUE = VALUE / 10
+  ) %>% 
+  spread(ELEMENT, VALUE) %>% 
+  mutate(NAVG = (TMAX + TMIN) / 2)
 head(otway_tidy)
 
 ## ---- ped-ggplot-1
@@ -120,6 +128,7 @@ ped_long %>%
     Sensor_Name ~ ., scale = "free_y", 
     labeller = labeller(Sensor_Name = label_wrap_gen(15))
   ) +
+  xlab("Date Time") +
   theme_remark()
 
 ## ---- ped-ggplot-2
@@ -131,15 +140,17 @@ ped_long %>%
     Sensor_Name ~ ., scale = "free_y", 
     labeller = labeller(Sensor_Name = label_wrap_gen(15))
   ) +
+  xlab("Date Time") +
   theme_remark() +
   theme(legend.position = "none")
 
 ## ---- southern-x
-wday <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+wday <- c("Monday", "Tuesday", "Wednesday", "Thursday", 
+  "Friday")
 sx <- ped_long %>% 
   filter(Sensor_Name == "Southern Cross Station") %>% 
   mutate(
-    Wday = wday2(Date, label = TRUE, abbr = FALSE),
+    Wday = wday(Date, label = TRUE, abbr = FALSE),
     Wday = if_else(Wday %in% wday, "Weekday", "Weekend"),
     Wday = ordered(Wday)
   )
@@ -176,7 +187,8 @@ sx_more <- sx %>%
   mutate(
     Wday = fct_expand(Wday, labour, adele),
     Wday = if_else(
-      Date == ymd("2017-03-13"), ordered(labour, levels(Wday)), Wday
+      Date == ymd("2017-03-13"), 
+      ordered(labour, levels(Wday)), Wday
     ),
     Wday = if_else(
       Date %in% ymd(c("2017-03-18", "2017-03-19")), 
@@ -220,7 +232,7 @@ otway_tidy %>%
     ),
     colour = "white", fill = "#d95f0e"
   ) +
-  geom_line(aes(x = DATE, y = TAVG), colour = "#525252") +
+  geom_line(aes(x = DATE, y = NAVG), colour = "#525252") +
   xlab("Date") +
   ylab("Daily temperature")
 
@@ -233,7 +245,7 @@ otway_more <- otway_tidy %>%
 otway_more
 
 ## ---- otway-month-a
-yr_avg <- mean(otway_more$TAVG)
+yr_avg <- mean(otway_more$NAVG)
 otway_more %>% 
   ggplot() +
   geom_hline(yintercept = yr_avg, colour = "#969696", size = 1) +
@@ -244,14 +256,14 @@ otway_more %>%
     ),
     colour = "white", fill = "#d95f0e"
   ) +
-  geom_line(aes(x = DAY, y = TAVG), colour = "#525252") +
+  geom_line(aes(x = DAY, y = NAVG), colour = "#525252") +
   facet_wrap(~ MONTH, ncol = 3) +
   xlab("Day") +
   ylab("Daily temperature") +
   theme_remark()
 
 ## ---- otway-month-b
-yr_avg <- mean(otway_more$TAVG)
+yr_avg <- mean(otway_more$NAVG)
 otway_more %>% 
   ggplot() +
   geom_hline(yintercept = yr_avg, colour = "#969696", size = 1) +
@@ -262,7 +274,7 @@ otway_more %>%
     ),
     colour = "white", fill = "#d95f0e"
   ) +
-  geom_line(aes(x = DAY, y = TAVG), colour = "#525252") +
+  geom_line(aes(x = DAY, y = NAVG), colour = "#525252") +
   facet_wrap(~ MONTH, ncol = 3) +
   xlab("Day") +
   ylab("Daily temperature") +
@@ -300,7 +312,10 @@ p3 <- a10_df %>%
   ggplot(aes(month, value)) +
   geom_line(aes(group = year), alpha = 0.2) +
   geom_line(aes(frame = year, colour = as.factor(year)), size = 1) +
-  scale_x_continuous(breaks = 1:12)
+  scale_x_continuous(
+    breaks = 1:12, 
+    labels = c("J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D")
+  )
 animation_opts(
   ggplotly(p3), frame = 1000, easing = "elastic"
 )
@@ -320,3 +335,59 @@ p_sx
 
 ## ---- calendar-prettify
 prettify(p_sx)
+
+##------------------------END-------------------------
+##-----------------------NOT USED BELOW--------------
+## ---- melb-tavg
+melb_weather <- read_csv("data/melb_weather.csv")
+melb_weather %>% 
+  mutate(YRMON = ymd(paste(YEAR, MONTH, "01", sep = "-"))) %>% 
+  ggplot(aes(YRMON, AVERAGE)) +
+  geom_line() +
+  xlab("Month") +
+  ylab("Monthly average temperature") +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "10 years")
+
+## ---- melb-trend
+weather_ts <- ts(melb_weather$AVERAGE, start = c(1947, 1), frequency = 12)
+weather_stl <- stl(weather_ts, s.window = "periodic", robust = TRUE)
+weather_trend <- weather_stl$time.series[, "trend"]
+
+melb_weather <- melb_weather %>% 
+  ungroup() %>% 
+  mutate(
+    TREND = as.numeric(weather_trend),
+    DATE = ymd(paste(YEAR, MONTH, "01", sep = "-"))
+  )
+
+melb_weather %>% 
+  ggplot(aes(DATE, TREND)) +
+  geom_line() +
+  xlab("Month") +
+  ylab("Monthly average temperature") +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "10 years")
+
+lineup_ts <- function(data, var, n = 20, pos = sample(n, 1)) {
+  p <- replicate(n = n, data_frame(.var = sample(data[[var]])), 
+    simplify = FALSE)
+  p <- p %>% 
+    map2(seq_len(n), ~ mutate(.x, .sample = .y))
+  p[[pos]]$.var <- data[[var]]
+  df_p <- p %>% 
+    map(~ bind_cols(., data)) %>% 
+    bind_rows() %>% 
+    unnest()
+  attr(df_p, "pos") <- pos
+  return(df_p)
+}
+
+melb_lineup <- melb_weather %>% 
+  group_by(YEAR) %>% 
+  nest() %>% 
+  lineup_ts(var = "YEAR")
+melb_lineup %>% 
+  mutate(.month = ymd(paste(.var, MONTH, "01", sep = "-"))) %>% 
+  ggplot(aes(.month, TREND)) +
+  geom_line() +
+  facet_wrap(~ .sample, ncol = 5)
+
