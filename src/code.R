@@ -126,7 +126,7 @@ ped_long %>%
   geom_line() +
   facet_grid(
     Sensor_Name ~ ., scale = "free_y", 
-    labeller = labeller(Sensor_Name = label_wrap_gen(15))
+    labeller = labeller(Sensor_Name = label_wrap_gen(12))
   ) +
   xlab("Date Time") +
   theme_remark()
@@ -138,7 +138,7 @@ ped_long %>%
   geom_line() +
   facet_grid(
     Sensor_Name ~ ., scale = "free_y", 
-    labeller = labeller(Sensor_Name = label_wrap_gen(15))
+    labeller = labeller(Sensor_Name = label_wrap_gen(12))
   ) +
   xlab("Date Time") +
   theme_remark() +

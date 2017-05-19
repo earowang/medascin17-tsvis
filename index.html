@@ -33,12 +33,25 @@ class: center, middle, inverse, title-slide
 * Why `tidyverse`? Tidy data
 
 
-* What does `gg` in `ggplot2` stand for? A grammar of graphics
+* What does `gg` in `ggplot2` stand for? Grammar of graphics
 
 
 * Interactive data visualisation on the web
     + plotly: `ggplotly()`, `plot_ly`, animation
     + shiny app: `wanderer4melb`
+
+---
+
+## R packages
+
+* `tidyverse`: a collection of R packages surrounding "tidy data"
+* `stringr`: handle string manipulation
+* `forcats`: handle categorical variables
+* `lubridate`: lubricate date-times process
+* `plotly`: create web-based visualisation
+* `shiny`: build interactive web applications
+* `knitr`: provide tools for dynamic report generation
+* `devtools`: help with R packages development
 
 
 
@@ -185,7 +198,6 @@ ped_2017
 ### - `autoplot`
 ]
 .right-column[
-
 
 ```r
 ped_ts &lt;- ts(ped_2017[, -c(1, 2)], frequency = 24)
@@ -501,6 +513,8 @@ class: middle
 
 ## What is a grammar of graphics?
 
+* In 1999, "The grammar of graphics" by Leland Wilkinson
+* In 2008, `ggplot2` by Hadley Wickham
 * A conceptual framework for mapping variables to graphical elements
 * The analogue of doing a functional mapping of random variables. For example,
   `\(n\)` independent and identically distributed RVs `\(X_1, \ldots, X_n\)`, the mean
