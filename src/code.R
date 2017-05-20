@@ -56,7 +56,7 @@ class(sub_ped_ts); tsp(sub_ped_ts)
 ## ---- ped-long
 ped_long <- ped_2017 %>% 
   gather(
-    Sensor_Name, Counts, 
+    key = Sensor_Name, value = Counts, 
     `State Library`:Southbank
   ) %>% 
   mutate(

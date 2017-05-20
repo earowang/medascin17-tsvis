@@ -39,6 +39,10 @@ read_chunk('src/code.R')
 
 ---
 
+background-image: url(img/stickers.001.png)
+background-size: 80%
+background-position: 60% 90%
+
 ## R packages
 
 * `tidyverse`: a collection of R packages surrounding "tidy data"
@@ -55,6 +59,7 @@ read_chunk('src/code.R')
 
 ```{r theme-remark}
 ```
+
 ---
 
 class: inverse middle center
@@ -179,6 +184,23 @@ hard to handle missing values
 
 ---
 
+background-image: url(img/verb.001.png)
+background-size: 85%
+
+.left-column[
+## Melbourne pedestrian data `r emo::ji("walking_woman")`
+### - sensor data
+### - sensor map
+### - hourly counts
+### - `autoplot`
+### - pros & cons
+### - tidy data
+]
+.right-column[
+]
+
+---
+
 .left-column[
 ## Melbourne pedestrian data `r emo::ji("walking_woman")`
 ### - sensor data
@@ -263,13 +285,13 @@ hard to handle missing values
 
 class: inverse middle center
 
-# A grammar of graphics
+# Grammar of graphics
 
 ---
 
 class: middle
 
-## What is a grammar of graphics?
+## What is grammar of graphics?
 
 * In 1999, "The grammar of graphics" by Leland Wilkinson
 * In 2008, `ggplot2` by Hadley Wickham
@@ -411,6 +433,22 @@ ggplot(sx, aes(Hour, Counts, group = Date)) +
 ]
 .right-column[
 
+Expertise and Google in action
+
+
+![](img/adele.png)
+
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - `ggplot2`
+### - southern x `r emo::ji("station")`
+]
+.right-column[
+
 ```{r x-more, echo = TRUE}
 ```
 
@@ -521,8 +559,13 @@ facet: MONTH
 
 ---
 
+background-image: url(img/data-science.png)
+background-size: 70%
+background-position: center middle
+
 ## Workflow
 
+.footnote[.red[*] source: [R for Data Science](http://r4ds.had.co.nz/introduction.html)]
 ---
 
 class: inverse middle center
