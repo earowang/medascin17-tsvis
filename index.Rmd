@@ -2,7 +2,7 @@
 title: "Tidy data and statistical visualisation <br> to support exploration of temporal data with R"
 type: "Workshop"
 author: "Earo Wang"
-date: "May 29, 2017 <br> <br> Slides on http://bit.ly/tsvis17"
+date: "May 29, 2017 <br> <br> Slides on http://bit.ly/tsvis2017"
 output:
   xaringan::moon_reader:
     css: ["default", "myremark.css"]
@@ -283,6 +283,44 @@ background-size: 85%
 
 ---
 
+.left-column[
+## Your turn
+### - billboard data
+]
+.right-column[
+
+`billboard.csv` records the date a song first entered the Billboard Top 100 in 
+2000 and its rank over 76 weeks.
+
+```{r lab3-read}
+```
+
+]
+
+---
+
+.left-column[
+## Your turn
+### - billboard data
+### - end products
+]
+.right-column[
+
+```r
+song
+```
+```{r lab3-song}
+```
+
+```r
+rank
+```
+```{r lab3-rank}
+```
+]
+
+---
+
 class: inverse middle center
 
 # Grammar of graphics
@@ -434,7 +472,6 @@ ggplot(sx, aes(Hour, Counts, group = Date)) +
 .right-column[
 
 Expertise and Google in action
-
 
 ![](img/adele.png)
 

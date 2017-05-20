@@ -21,7 +21,7 @@ class: center, middle, inverse, title-slide
 
 # Tidy data and statistical visualisation <br> to support exploration of temporal data with R
 ### Earo Wang
-### May 29, 2017 <br> <br> Slides on <a href="http://bit.ly/tsvis17" class="uri">http://bit.ly/tsvis17</a>
+### May 29, 2017 <br> <br> Slides on <a href="http://bit.ly/tsvis2017" class="uri">http://bit.ly/tsvis2017</a>
 
 ---
 
@@ -525,6 +525,100 @@ head(otway_tidy)
 
 ---
 
+.left-column[
+## Your turn
+### - billboard data
+]
+.right-column[
+
+`billboard.csv` records the date a song first entered the Billboard Top 100 in 
+2000 and its rank over 76 weeks.
+
+
+```
+#&gt; # A tibble: 6 x 81
+#&gt;    year               artist                   track
+#&gt;   &lt;int&gt;                &lt;chr&gt;                   &lt;chr&gt;
+#&gt; 1  2000 Backstreet Boys, The       Shape Of My Heart
+#&gt; 2  2000 Backstreet Boys, The Show Me The Meaning ...
+#&gt; 3  2000 Backstreet Boys, The                 The One
+#&gt; 4  2000               N'Sync             Bye Bye Bye
+#&gt; 5  2000               N'Sync        It's Gonna Be Me
+#&gt; 6  2000               N'Sync      This I Promise You
+#&gt; # ... with 78 more variables: time &lt;time&gt;,
+#&gt; #   date.entered &lt;date&gt;, `1` &lt;int&gt;, `2` &lt;int&gt;, `3` &lt;int&gt;,
+#&gt; #   `4` &lt;int&gt;, `5` &lt;int&gt;, `6` &lt;int&gt;, `7` &lt;int&gt;, `8` &lt;int&gt;,
+#&gt; #   `9` &lt;int&gt;, `10` &lt;int&gt;, `11` &lt;int&gt;, `12` &lt;int&gt;,
+#&gt; #   `13` &lt;int&gt;, `14` &lt;int&gt;, `15` &lt;int&gt;, `16` &lt;int&gt;,
+#&gt; #   `17` &lt;int&gt;, `18` &lt;int&gt;, `19` &lt;int&gt;, `20` &lt;int&gt;,
+#&gt; #   `21` &lt;int&gt;, `22` &lt;int&gt;, `23` &lt;int&gt;, `24` &lt;int&gt;,
+#&gt; #   `25` &lt;int&gt;, `26` &lt;int&gt;, `27` &lt;chr&gt;, `28` &lt;chr&gt;,
+#&gt; #   `29` &lt;chr&gt;, `30` &lt;chr&gt;, `31` &lt;chr&gt;, `32` &lt;chr&gt;,
+#&gt; #   `33` &lt;chr&gt;, `34` &lt;chr&gt;, `35` &lt;chr&gt;, `36` &lt;chr&gt;,
+#&gt; #   `37` &lt;chr&gt;, `38` &lt;chr&gt;, `39` &lt;chr&gt;, `40` &lt;chr&gt;,
+#&gt; #   `41` &lt;chr&gt;, `42` &lt;chr&gt;, `43` &lt;chr&gt;, `44` &lt;chr&gt;,
+#&gt; #   `45` &lt;chr&gt;, `46` &lt;chr&gt;, `47` &lt;chr&gt;, `48` &lt;chr&gt;,
+#&gt; #   `49` &lt;chr&gt;, `50` &lt;chr&gt;, `51` &lt;chr&gt;, `52` &lt;chr&gt;,
+#&gt; #   `53` &lt;chr&gt;, `54` &lt;chr&gt;, `55` &lt;chr&gt;, `56` &lt;chr&gt;,
+#&gt; #   `57` &lt;chr&gt;, `58` &lt;chr&gt;, `59` &lt;chr&gt;, `60` &lt;chr&gt;,
+#&gt; #   `61` &lt;chr&gt;, `62` &lt;chr&gt;, `63` &lt;chr&gt;, `64` &lt;chr&gt;,
+#&gt; #   `65` &lt;chr&gt;, `66` &lt;chr&gt;, `67` &lt;chr&gt;, `68` &lt;chr&gt;,
+#&gt; #   `69` &lt;chr&gt;, `70` &lt;chr&gt;, `71` &lt;chr&gt;, `72` &lt;chr&gt;,
+#&gt; #   `73` &lt;chr&gt;, `74` &lt;chr&gt;, `75` &lt;chr&gt;, `76` &lt;chr&gt;
+```
+
+]
+
+---
+
+.left-column[
+## Your turn
+### - billboard data
+### - end products
+]
+.right-column[
+
+```r
+song
+```
+
+```
+#&gt; # A tibble: 6 x 4
+#&gt;      id               artist                   track
+#&gt;   &lt;int&gt;                &lt;chr&gt;                   &lt;chr&gt;
+#&gt; 1     1 Backstreet Boys, The       Shape Of My Heart
+#&gt; 2     2 Backstreet Boys, The Show Me The Meaning ...
+#&gt; 3     3 Backstreet Boys, The                 The One
+#&gt; 4     4               N'Sync             Bye Bye Bye
+#&gt; 5     5               N'Sync        It's Gonna Be Me
+#&gt; 6     6               N'Sync      This I Promise You
+#&gt; # ... with 1 more variables: time &lt;time&gt;
+```
+
+```r
+rank
+```
+
+```
+#&gt; # A tibble: 456 x 4
+#&gt;       id date.entered  week  rank
+#&gt;    &lt;int&gt;       &lt;date&gt; &lt;chr&gt; &lt;chr&gt;
+#&gt;  1     1   2000-10-14     1    39
+#&gt;  2     2   2000-01-01     1    74
+#&gt;  3     3   2000-05-27     1    58
+#&gt;  4     4   2000-01-29     1    42
+#&gt;  5     5   2000-05-06     1    82
+#&gt;  6     6   2000-09-30     1    68
+#&gt;  7     1   2000-10-14     2    25
+#&gt;  8     2   2000-01-01     2    62
+#&gt;  9     3   2000-05-27     2    50
+#&gt; 10     4   2000-01-29     2    20
+#&gt; # ... with 446 more rows
+```
+]
+
+---
+
 class: inverse middle center
 
 # Grammar of graphics
@@ -701,7 +795,6 @@ ggplot(sx, aes(Hour, Counts, group = Date)) +
 .right-column[
 
 Expertise and Google in action
-
 
 ![](img/adele.png)
 

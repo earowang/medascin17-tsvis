@@ -118,6 +118,26 @@ otway_tidy <- otway_weather %>%
   mutate(NAVG = (TMAX + TMIN) / 2)
 head(otway_tidy)
 
+## ---- lab3-read
+billboard <- read_csv("data/billboard.csv")
+billboard
+
+## ---- lab3-song
+billboard_long <- billboard %>%
+  gather(week, rank, `1`:`76`)
+song <- billboard_long %>%
+  select(artist, track, time) %>%
+  distinct() %>%
+  mutate(id = row_number()) %>% 
+  select(id, artist, track, time)
+song
+
+## ---- lab3-rank
+rank <- billboard_long %>%
+  left_join(song, by = c("artist", "track", "time")) %>%
+  select(id, date.entered, week, rank)
+rank
+
 ## ---- ped-ggplot-1
 seleted_names <- colnames(ped_ts)[selected_id]
 ped_long %>% 
