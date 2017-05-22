@@ -410,4 +410,3 @@ melb_lineup %>%
   ggplot(aes(.month, TREND)) +
   geom_line() +
   facet_wrap(~ .sample, ncol = 5)
-

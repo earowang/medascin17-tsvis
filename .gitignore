@@ -1,3 +1,4 @@
 .DS_Store
 **/cache/
 data/au_weather1947.rds
+.Rproj.user
