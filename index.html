@@ -40,6 +40,21 @@ class: center, middle, inverse, title-slide
     + plotly: `ggplotly()`, `plot_ly`, animation
     + shiny app: `wanderer4melb`
 
+???
+
+Lemme introduce myself a little bit. I'm currently doing my PhD at Monash, working
+with Di and Rob. My research is about visualising temporal data.
+
+This is what I'm going to cover for the next one hour and half. First, I'll talk
+about why `tidyverse` is great. `tidyverse` is a collection of R packages that
+center around the "tidy data" concept. We'll learn some verbs/functions that do 
+the data wrangling to get the tidy temporal data. Second, we'll learn about the 
+`ggplot2` that handles with plotting. You may wonder why it's called `ggplot2` 
+and what `gg` means. It's grammar of graphics for plots. I'll talk about how the
+`ggplot2` functions powered by the grammar help us to visualise time series data.
+In the final bit, I'm going to show you some demos about interactive graphics using
+`plotly` and `shiny`.
+
 ---
 
 background-image: url(img/stickers.001.png)
@@ -61,11 +76,23 @@ background-position: 60% 90%
 
 
 
+???
+
+Here's a list of R packages that we're going to use for this part. As I said
+before, `tidyverse` is a set of packages including `ggplot2`, `dplyr`, `readr`
+etc. `stringr` for strings and `forcats` for categorical variables. `lubridate`
+is for making dealing with dates easier. `plotly` and `shiny` for interactive
+graphics on the web.
+
 ---
 
 class: inverse middle center
 
 # Tidy data
+
+???
+
+Okay. Now, let's start with tidy data.
 
 ---
 
@@ -79,8 +106,14 @@ class: middle
 
 ???
 
-tidyverse assumes the underlying data structure is a rectangular cases-by-variables
-data layout.
+What is tidy data? What makes a dataset tidy?
+
+1.2.3
+
+The data structure is a rectangular cases-by-variables data layout that underlines
+the `tidyverse`.
+
+I'll use three datasets to explain what tidy data actually mean.
 
 ---
 
