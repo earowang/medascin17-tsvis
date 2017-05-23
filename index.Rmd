@@ -133,7 +133,15 @@ I'll use three datasets to explain what tidy data actually mean.
 The first dataset we're going to look at is ...
 
 The dataset is sourced from Melbourne Open Data Portal. You can actually click
-here to check out the web page that hosts the dataset.
+here to check out the web page that hosts the dataset. Since 2009, the city of
+Melb started to install some sensors that capture the foot traffic every hour.
+This data can be used for urban planning or business management. For example,
+if you're a cafe owner, by looking at the hourly traffic to decide the trading
+hours. Until today, there are 43 sensors have been installed across the city.
+
+Here, I read the sensor locations data into R using `read_csv` from `readr` pkg.
+Rob has talked about the pipe operator. I pass the data to the `select` function
+and select four colnames, that is ...
 
 ---
 
@@ -148,6 +156,11 @@ here to check out the web page that hosts the dataset.
 ```
 ]
 
+???
+
+As I know sensor's long and lat, I could plot these sensors on the map of Melb.
+It clearly shows the locations of these sensors.
+
 ---
 
 .left-column[
@@ -161,6 +174,17 @@ here to check out the web page that hosts the dataset.
 ```{r ped-wide, echo = TRUE}
 ```
 ]
+
+???
+
+Besides the locations, we're more interested in learning about the hourly pedestrian
+counts at every sensor. I read the second csv file that contains the pedestrian
+counts in March.
+
+For this data, there are 744 obs and 45 columns. ...
+
+Lemme me refer to this kind of format as wide format by contrast to long form.
+I'll explain what I mean by wide and long later.
 
 ---
 
@@ -183,6 +207,14 @@ autoplot(sub_ped_ts, facet = TRUE)
 ```{r ped-ts, fig.height = 10}
 ```
 ]
+
+???
+
+The first tool I use to visualise the traffic pattern is `autoplot`.
+
+explain the code
+
+As you can see, different temporal patterns for different locations.
 
 ---
 
