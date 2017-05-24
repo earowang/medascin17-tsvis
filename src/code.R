@@ -144,6 +144,7 @@ ped_long %>%
   filter(Sensor_Name %in% seleted_names) %>% 
   ggplot(aes(x = Date_Time, y = Counts)) +
   geom_line() +
+  geom_point(size = 0.6) +
   facet_grid(
     Sensor_Name ~ ., scale = "free_y", 
     labeller = labeller(Sensor_Name = label_wrap_gen(12))
@@ -156,6 +157,7 @@ ped_long %>%
   filter(Sensor_Name %in% seleted_names) %>% 
   ggplot(aes(x = Date_Time, y = Counts, colour = Sensor_Name)) +
   geom_line() +
+  geom_point(size = 0.6) +
   facet_grid(
     Sensor_Name ~ ., scale = "free_y", 
     labeller = labeller(Sensor_Name = label_wrap_gen(12))

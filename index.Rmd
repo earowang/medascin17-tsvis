@@ -214,7 +214,11 @@ The first tool I use to visualise the traffic pattern is `autoplot`.
 
 explain the code
 
-As you can see, different temporal patterns for different locations.
+As you can see, different temporal patterns for different locations. You may think
+why `autoplot` gives you a conventional time series line plot instead of other
+types of plots like dot plots. Bc `autoplot` is an S3 method and it recognises
+the input as a `ts` class. So it knows how to deal with it by plotting the obs
+against the time index.
 
 ---
 
@@ -252,6 +256,20 @@ A `ts` object associates with a `tsp` attribute as metadata.
 
 ???
 
+Let's take a closer look at the `ts` class.
+
+The `class` function tells us what class the object is.
+
+Instead of storing the time index as a column, it's being stored as meta info
+which is `tsp` attribute.
+
+The advantage for using a `ts` data class is 1.
+
+The second is as the time attributes are stored as metadata, for some specialist
+methods like, they know how to automatically handle them 
+
+However, `ts` class isn't data centric, not flexible for data analysis and vis.
+
 hard to handle missing values
 
 ---
@@ -271,6 +289,20 @@ background-size: 85%
 .right-column[
 ]
 
+???
+
+The remedy is converting the wide format to the long data.
+
+The top data table is what we have, wide
+
+gather the headers to one key variable, and the counts to the value variable.
+
+By having more than 40 columns, we have four vars to work with. Looking at this
+long form, what are the variables become clearer compared to the wide format.
+Each variable forms a column.
+
+from tidyr
+
 ---
 
 .left-column[
@@ -288,6 +320,10 @@ background-size: 85%
 ```
 
 ]
+
+???
+
+Any questions so far?
 
 ---
 
@@ -397,6 +433,11 @@ class: inverse middle center
 
 # Grammar of graphics
 
+???
+
+* basic/good understanding of tidy data structure
+* bc it builds a solid foundation to statistical vis.
+
 ---
 
 class: middle
@@ -411,10 +452,28 @@ class: middle
   is defined as 
   $$\bar{X} = \frac{1}{n} \sum_{i = 1}^{n} X_{i} \qquad S_{n-1} = \frac{1}{n-1} \sum_{i = 1}^{n} \left(X_i - \bar{X} \right)^2.$$
 
+???
+
+we're going to use some short but comprehensive vocabulary to describe different
+sorts of graphs.
+
 ---
 
 .left-column[
 ## More on pedestrian data
+### - revisit
+]
+.right-column[
+```{r revisit, echo = TRUE}
+ped_long
+```
+]
+
+---
+
+.left-column[
+## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ]
 .right-column[
@@ -423,7 +482,7 @@ class: middle
 data: ped_long
 layer:
     mapping: x = Date_Time, y = Counts
-    geom: line
+    geom: line, point
 facet: Sensor_Name
 ```
 
@@ -433,19 +492,25 @@ facet: Sensor_Name
 ```r
 ggplot(ped_long, aes(x = Date_Time, y = Counts)) +
   geom_line() +
+  geom_point() +
   facet_grid(Sensor_Name ~ ., scale = "free_y")
 ```
 ]
 
-
 ???
 
-as you can see, it provides short but comprehensive vocabulary for describing a plot.
+* `autoplot`: against time index
+* This is how we use graphic gramma to describe the plot
+* Start with a tidy dataset with clearly defined variables.
+* geom and other aes make the graph perceivable.
+* facet: trellis plots or lattice plots.
+* scale: local for comparing shapes instead of magnitudes.
 
 ---
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ]
 .right-column[
@@ -454,7 +519,7 @@ as you can see, it provides short but comprehensive vocabulary for describing a 
 data: ped_long
 layer:
     mapping: x = Date_Time, y = Counts, colour = Sensor_Name
-    geom: line
+    geom: line, point
 facet: Sensor_Name
 ```
 
@@ -464,14 +529,24 @@ facet: Sensor_Name
 ```r
 ggplot(ped_long, aes(x = Date_Time, y = Counts)) +
   geom_line(aes(colour = Sensor_Name)) +
+  geom_point(aes(colour = Sensor_Name)) +
   facet_grid(Sensor_Name ~ ., scale = "free_y")
 ```
 ]
+
+???
+
+* colour is also the part of aes mapping.
+* not adding additional info in this case.
+* pedestrian data interesting and rich
+* southern x as an example to explore
+* seems that sx has distinctive patterns b/t weekdays and weekend
 
 ---
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
@@ -486,6 +561,7 @@ ggplot(ped_long, aes(x = Date_Time, y = Counts)) +
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
@@ -512,6 +588,7 @@ ggplot(sx, aes(Hour, Counts, group = Date)) +
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
@@ -534,10 +611,16 @@ ggplot(sx, aes(Hour, Counts, group = Date)) +
 ```
 ]
 
+???
+
+* weekday and weekends are not yet sufficient.
+* ?what day would make this behave like a weekend. ---> labour day
+
 ---
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
@@ -553,6 +636,7 @@ Expertise and Google in action
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
@@ -567,6 +651,7 @@ Expertise and Google in action
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
@@ -589,10 +674,15 @@ ggplot(sx_more, aes(Hour, Counts, group = Date)) +
 ```
 ]
 
+???
+
+rose plot
+
 ---
 
 .left-column[
 ## More on pedestrian data
+### - revisit
 ### - `ggplot2`
 ### - southern x `r emo::ji("station")`
 ]
