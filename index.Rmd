@@ -389,6 +389,10 @@ Any questions so far?
 ```
 ]
 
+???
+
+TAVG: UTC time zone rather than local time
+
 ---
 
 .left-column[
@@ -404,6 +408,12 @@ Any questions so far?
 ```
 
 ]
+
+???
+
+* Old dataset
+* A song first time entered to the billboard Top 100, when it's entered
+* The position and if NA, dropped from the Top 100
 
 ---
 
@@ -426,6 +436,12 @@ rank
 ```{r lab3-rank}
 ```
 ]
+
+???
+
+* convert wide to long
+* spit to two data tables
+* Follows the third point of the tidy data principles: Each type of observational unit forms a table.
 
 ---
 
@@ -556,6 +572,11 @@ ggplot(ped_long, aes(x = Date_Time, y = Counts)) +
 ```
 
 ]
+
+???
+
+* explain activities at some time points.
+* more spread out in afternoon than in morning.
 
 ---
 
@@ -730,6 +751,10 @@ ggplot(sx_more, aes(Hour, Counts, group = Date)) +
 ```
 ]
 
+???
+
+Discuss with your neighbour what's the graph about and what's the grammar used?
+
 ---
 
 .left-column[
@@ -756,6 +781,10 @@ facet: MONTH
 ```
 ]
 
+???
+
+Let them do the lab exercise first without explaining the grammar.
+
 ---
 
 background-image: url(img/data-science.png)
@@ -765,11 +794,23 @@ background-position: center middle
 ## Workflow
 
 .footnote[.red[*] source: [R for Data Science](http://r4ds.had.co.nz/introduction.html)]
+
+???
+
+* The first two sections: transform and visualise
+* missing component is "model", leave it to Rob
+* report the findings: communicate using interactive tools
+
 ---
 
 class: inverse middle center
 
 # Interactive data visualisation <br> on the web
+
+???
+
+* bringing interactivity to the graphs provides a different dim to look at the data
+* serves as an exploratory and communication tool
 
 ---
 
@@ -782,6 +823,13 @@ class: inverse middle center
 ```
 ]
 
+???
+
+* how do I know when these "weired" behaviour happened? If by looking at static plot.
+* `plotly`
+* instead of having two different copies of code, `ggplotly` only needs one.
+* hover info is quite comprehensive using `ggplotly`.
+
 ---
 
 .left-column[
@@ -793,6 +841,12 @@ class: inverse middle center
 ```{r plotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8, dpi = 72}
 ```
 ]
+
+???
+
+* `ggplotly` shortcut
+* authentic `plot_ly` replicate the plot.
+* hover info needs to be customised.
 
 ---
 
@@ -823,6 +877,11 @@ animation_opts(
 ```
 ]
 
+???
+
+* new release of plotly 4.6 comes with a new feature, animation.
+* explain the code.
+
 ---
 
 .left-column[
@@ -843,6 +902,17 @@ wanderer4melb::launch_app()
 ```
 
 ]
+
+???
+
+* let's bind what you've learned before together into a shiny app.
+* tidy data, grammar of graphics, and plotly
+* I'm showing a demo
+* inspiration: we know foot traffic is largely determined by temporal components,
+  for example ... and special events. Any other factors affect the number of ped
+  too? like temperature and rainfall? If it's extremely cold and heavy rain/storm,
+  would you hand out in the city?
+* explain the layout and the graphs.
 
 ---
 
@@ -870,6 +940,10 @@ If you find a bug or wanna suggest a new feature, please report/propose it on
 the [Github page](https://github.com/earowang/sugrrants/issues). Thanks.
 
 ]
+
+???
+
+
 
 ---
 
