@@ -48,7 +48,7 @@ with Di and Rob. My research is about visualising temporal data.
 This is what I'm going to cover for the next one hour and half. First, I'll talk
 about why `tidyverse` is great. `tidyverse` is a collection of R packages that
 center around the "tidy data" concept. We'll learn some verbs/functions that do 
-the data wrangling to get the tidy temporal data. Second, we'll learn about the 
+the data wrangling to get the tidy temporal data. As data analysts ... Second, we'll learn about the 
 `ggplot2` that handles with plotting. You may wonder why it's called `ggplot2` 
 and what `gg` means. It's grammar of graphics for plots. I'll talk about how the
 `ggplot2` functions powered by the grammar help us to visualise time series data.
@@ -113,7 +113,8 @@ What is tidy data? What makes a dataset tidy?
 The data structure is a rectangular cases-by-variables data layout that underlines
 the `tidyverse`.
 
-I'll use three datasets to explain what tidy data actually mean.
+I'll use three datasets to explain what tidy data actually mean. How important
+is the tidy data for further data analysis and vis.
 
 ---
 
@@ -254,6 +255,8 @@ counts in March.
 
 For this data, there are 744 obs and 45 columns. ...
 
+Date is read into as character ...
+
 Lemme me refer to this kind of format as wide format by contrast to long form.
 I'll explain what I mean by wide and long later.
 
@@ -284,11 +287,12 @@ The first tool I use to visualise the traffic pattern is `autoplot`.
 
 explain the code
 
-As you can see, different temporal patterns for different locations. You may think
-why `autoplot` gives you a conventional time series line plot instead of other
-types of plots like dot plots. Bc `autoplot` is an S3 method and it recognises
+`autoplot` automatically gives you a conventional time series line plot. Bc `autoplot` recognises
 the input as a `ts` class. So it knows how to deal with it by plotting the obs
-against the time index.
+against the time index. As you can see, different patterns for differnt locations.
+
+`autoplot` gives a nice line graph due to the `ts` object, but it also becomes a 
+limiting factor to try other types of plots because of the `ts` object.
 
 ---
 
@@ -340,8 +344,7 @@ Let's take a closer look at the `ts` class.
 
 The `class` function tells us what class the object is.
 
-Instead of storing the time index as a column, it's being stored as meta info
-which is `tsp` attribute.
+Rather than a matrix, the `tsp` attributes stored as meta info make it to a `ts` object.
 
 The advantage for using a `ts` data class is 1.
 
@@ -351,6 +354,9 @@ methods like, they know how to automatically handle them
 However, `ts` class isn't data centric, not flexible for data analysis and vis.
 
 hard to handle missing values
+
+It's certainly not my goal to teach you how to use `autoplot`. We're going to
+do more that beyond what `autoplot` can do.
 
 ---
 
@@ -917,11 +923,6 @@ sx
 
 ]
 
-???
-
-* explain activities at some time points.
-* more spread out in afternoon than in morning.
-
 ---
 
 .left-column[
@@ -947,6 +948,11 @@ ggplot(sx, aes(Hour, Counts, group = Date)) +
 ```
 
 ]
+
+???
+
+* explain activities at some time points.
+* more spread out in afternoon than in morning.
 
 ---
 
@@ -1038,6 +1044,10 @@ head(sx_more)
 #&gt; # ... with 2 more variables: Date_Time &lt;dttm&gt;, Wday &lt;ord&gt;
 ```
 
+???
+
+transform the data
+
 ]
 
 ---
@@ -1068,7 +1078,13 @@ ggplot(sx_more, aes(Hour, Counts, group = Date)) +
 
 ???
 
-rose plot
+grammar remains the same but using transformed data
+
+I've just showed you how to use the graphics to explore the data. Notice something
+unexpected and use your expertise or other resouces to explain and produce another
+graph.
+
+Has anyone noticed there's another weired day that I haven't explained/exploited?
 
 ---
 
@@ -1097,6 +1113,23 @@ ggplot(sx_more, aes(Hour, Counts, group = Date)) +
   coord_polar()
 ```
 ]
+
+???
+
+known as rose plot
+
+This slide also shows the advantage of using the grammar. Instead of referring
+to these as line and rose, the grammar informs you of the difference between
+the two plots is simply one linear and one polar coordinates.
+
+polar: periodic behaviour
+
+When you need to decide which plot you should pick up for you presentation, it
+should be conducted under the statitical hyphothesis testing framework, known
+as visual inference. 
+
+Be aware of that it provides scientific tools to help with which display is more
+powerful.
 
 ---
 
@@ -1190,6 +1223,7 @@ background-position: center middle
 
 ???
 
+* This is the workflow that we followed in the first two parts
 * The first two sections: transform and visualise
 * missing component is "model", leave it to Rob
 * report the findings: communicate using interactive tools
