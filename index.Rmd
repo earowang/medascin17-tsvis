@@ -20,7 +20,7 @@ opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = 'figure/', cache.path = 'cache/', fig.align = 'center', 
   fig.width = 12, fig.height = 9, fig.show = 'hold', 
-  cache = TRUE, external = TRUE, dev = 'CairoPNG', dpi = 300
+  cache = TRUE, external = TRUE, dev = 'svg'
 )
 read_chunk('src/code.R')
 ```
@@ -153,7 +153,7 @@ and select four colnames, that is ...
 ]
 .right-column[
 
-```{r ped-map}
+```{r ped-map, dev = "CairoPNG", dpi = 300}
 ```
 ]
 
@@ -672,11 +672,11 @@ Expertise and Google in action
 ```{r x-more, echo = TRUE}
 ```
 
+]
+
 ???
 
 transform the data
-
-]
 
 ---
 
@@ -853,7 +853,7 @@ class: inverse middle center
 ### - `ggplotly`
 ]
 .right-column[
-```{r ggplotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8, dpi = 72}
+```{r ggplotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8}
 ```
 ]
 
@@ -872,7 +872,7 @@ class: inverse middle center
 ### - `plot_ly`
 ]
 .right-column[
-```{r plotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8, dpi = 72}
+```{r plotly-sx-facet, echo = TRUE, fig.height = 4.5, fig.width = 8}
 ```
 ]
 
@@ -907,7 +907,7 @@ animation_opts(
 )
 ```
 
-```{r animate, echo = FALSE, fig.height = 4.5, fig.width = 8, dpi = 72}
+```{r animate, echo = FALSE, fig.height = 4.5, fig.width = 8}
 ```
 ]
 
@@ -932,7 +932,8 @@ visualising Melbourne pedestrian and weather data in 2016.
 ```r
 # install.packages("devtools")
 devtools::install_github("earowang/wanderer4melb")
-wanderer4melb::launch_app()
+library(wanderer4melb)
+launch_app()
 ```
 
 ]
