@@ -218,6 +218,8 @@ Each variable forms a column.
 
 from tidyr
 
+organise the same data in two different ways. To be consistent, tidy long data used.
+
 ---
 
 .left-column[
@@ -544,6 +546,7 @@ facet: Wday
 
 ```r
 ggplot(sx, aes(Hour, Counts, group = Date)) +
+  geom_line(aes(colour = Wday)) +
   facet_wrap(~ Wday, ncol = 2)
 ```
 ]
